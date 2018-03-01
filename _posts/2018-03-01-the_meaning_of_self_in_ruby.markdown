@@ -6,7 +6,7 @@ permalink:  the_meaning_of_self_in_ruby
 ---
 
 
-The idea for this post came from a conversation with one of my classmates at FLATIRON. Later I saw the same question asked on many different Ruby forums (as well as other programming langua``ges forums.) 
+The idea for this post came from a conversation with one of my classmates at FLATIRON. Later I saw the same question asked on many different Ruby forums (as well as other programming  forums.) 
 
 Self in Ruby is often perceived as being a very confusing topic. The reason for this  is because, well, it is a very confusing topic.
 In my case  a huge obstacle in understanding certain subjects in programming is trying to decipher too much code at once. So often find myself in the position of taking somebody else's example and trying to simplify the code  by eliminating as many parts as possible in order to grasp the logic behind the code  So in a desperate attempt to shed some light on this infamous subject "The meaning of self in Ruby"  I will use a very basic examples and I will try to keep it as short simple as possible, so please bear with me. 
@@ -32,44 +32,50 @@ So again, "Self" is going to change it's meaning within the same piece of code. 
  
 ##########################################################################
 
-> class Mother_ufo_ship   
+>               class Mother_ufo_ship   
 >   
->   @@class_record_arr=[]
+>                  @@class_record_arr=[]
 >   
->     def initialize(baby_ship_name)
+>                     def initialize(baby_ship_name)
 >     
->     @name=baby_ship_name    
->     @@class_record_arr<<self             # my first self
->      
->   end 
+>                            @name=baby_ship_name                             
+>                            @@class_record_arr<<self     
+>                            end 
 >   
->     def show_record_method
 >     
->    @@class_record_arr 
->     
->      end 
-> 
-> end
+>                 def show_record_method    
+>                       @@class_record_arr     
+>                 end 
+>                 
+>             end
 
 #########################################
+> ```
 
- a_ship=Mother_ufo_ship.new("1st baby ship")
+>  a_ship=Mother_ufo_ship.new("1st baby ship")
+>  
+>  b_ship=Mother_ufo_ship.new("2nd baby ship")
+>  
+>  a_ship.show_record_method
+```
  
- b_ship=Mother_ufo_ship.new("2nd baby ship")
+ #########################################
+```
  
- a_ship.show_record_method
+> def initialize(baby_ship_name) 
+> 
+>                       #Every baby ship receives  a name during  
+>                       #the initialization process
+```
 
 
-!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
-> def initialize(baby_ship_name) <--- Every baby ship is going to receive a name during  
->                                                                                                                 <--- the initialization process
-
-
-#################################################################
+##############################################################
 
 Part 1 Explanation 
-#################################################################
 
+##############################################################
+
+```
 > @@class_record_arr=[]    
 >                          <--- Declaring an array that is going to serve 
 >                          <--- as a record of all the baby ships created 
@@ -77,9 +83,11 @@ Part 1 Explanation
 >                          <--- The array is going to be held at the mother ship
 >                          <--- @@ < indicates a class variable so it can be accessed by 
 >                          <--- every instance of that class
+```
 
-def initialize(baby_ship_name) <--- Every baby ship is going to receive a name during  
-                               <--- the initialization process
+def initialize(baby_ship_name) 
+             #Every baby ship is going to receive a name during  
+             # the initialization process
     
     @name=baby_ship_name       <--- the baby ship's name is getting assigned to an 
                                <--- instance variable @name
@@ -173,22 +181,25 @@ So I guess like the romans used to say "Quod Erat Demonstrandum"
 The keyword "self" in the code below is used twice pointing at two different things
 
 -------------------------------------------------------
-> class Mother_ufo_ship
+>    class Mother_ufo_ship  
+>   
+>          @@class_record_arr=[]
+>   
+>           def initialize(baby_ship_name)
+>           
+>           @name=baby_ship_name
+>           @@class_record_arr<<self      #<--self points to "itself the instance"
+>                                   
+>           end                     
 >    
 >   
->   @@class_record_arr=[]
->   
->   def initialize(baby_ship_name)
->     @name=baby_ship_name
->     @@class_record_arr<<self   <---- self points to "itself the instance"
->   end 
->   
->   def self.show_record_method  <---- self points to "itself the class"
->   @@class_record_arr 
-> end 
-> 
->   
-> end 
+>             def self.show_record_method    #<-- self points to "itself the class"
+>              
+>                @@class_record_arr 
+>          
+>              end 
+>    
+>    end 
 > 
 -------------------------------------------------------
 
