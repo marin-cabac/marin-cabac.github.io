@@ -32,6 +32,7 @@ So again, "Self" is going to change it's meaning within the same piece of code. 
  
 ##########################################################################
 
+```
 >               class Mother_ufo_ship   
 >   
 >                  @@class_record_arr=[]
@@ -48,25 +49,28 @@ So again, "Self" is going to change it's meaning within the same piece of code. 
 >                 end 
 >                 
 >             end
+```
 
 #########################################
-> ```
 
->  a_ship=Mother_ufo_ship.new("1st baby ship")
->  
->  b_ship=Mother_ufo_ship.new("2nd baby ship")
->  
->  a_ship.show_record_method
+  ```
+a_ship=Mother_ufo_ship.new("1st baby ship")
+  b_ship=Mother_ufo_ship.new("2nd baby ship")  
+	
+  a_ship.show_record_method
+
 ```
- 
+
  #########################################
-```
+
  
-> def initialize(baby_ship_name) 
-> 
->                       #Every baby ship receives  a name during  
->                       #the initialization process
 ```
+ def initialize(baby_ship_name) 
+
+#Every baby ship receives  a name during                        
+#the initialization process`
+```
+
 
 
 ##############################################################
@@ -100,35 +104,63 @@ def initialize(baby_ship_name)
 
 ################################################################
   
->   def show_record_method     <--- this is an instance method that evey baby ship is 
->                                                            <--- is going to have and it will access a class variable
->     @@class_record_arr            <--- that is held at the mother ship.    
+
+```
+>   def show_record_method     
+>                                                             
+>     @@class_record_arr            
 >     
 >      end 
 
-################################################################
 
-> a_ship=Mother_ufo_ship.new("1st baby ship")  ###<--- creating 2 new baby ships and 
-> b_ship=Mother_ufo_ship.new("2nd baby ship") ###<--- giving assigning them a name
-                                            <--- Remember upon creation self points 
-                                            <--- to the newly created ship and gets
-                                            <--- appended to the record array 
-                                            <--- which is a class variable held at 
-                                            <--- the mother ship
 
-> a_ship.show_record_method   ###<--- calling the instance method that retrieves the 
-                                                                 ###<--- @@class_record_arr  
-																															   ###<---class variable from
-                                                                 ###<--- the mother ship
+       #  this is an instance method that evey instance baby ship 
+       #   will have and it this method allow to access a class variable
+       #    that is held at the mother ship.   
+```
+			 
+#########################################
+```
 
-###------------------------------------------------------------
+> a_ship=Mother_ufo_ship.new("1st baby ship") 
+> b_ship=Mother_ufo_ship.new("2nd baby ship")
+```
 
-Output for the above method call
 
-a_ship.show_record_method 
+	###  here we are creating 2 new baby ships and 
+	###  giving assigning them a name
+	###  Remember upon creation self points 
+	###  to the newly created ship and gets
+	###  appended to the record array 
+	###  which is a class variable held at 
+	###  the mother ship
 
-=> [#<Mother_ufo_ship:0x005566c17b96e8 @name="1st baby ship">, #<Mother_ufo_ship:0x005566c17b9698 @name="2nd baby ship">]      <--- An array 
-                                                            <--- of 2 instance objects held at the mother ship
+
+
+```
+
+> a_ship.show_record_method 
+
+ ###calling the instance method that retrieves the 
+ ###@@class_record_arr  
+ ###class variable from
+ ###the mother ship
+```
+
+
+
+> Output for the above method call
+
+#########################################
+
+```
+a_ship.show_record_method       <-----calling the instance method 
+
+=> [#<Mother_ufo_ship:0x005566c17b96e8 @name="1st baby ship">, #<Mother_ufo_ship:0x005566c17b9698 @name="2nd baby ship">]      
+
+   #The output is an array 
+   #of 2 instance objects held at the mother ship
+```
 
 
 
@@ -140,22 +172,26 @@ PART 2 where a second "self" refers to the Class not the instance
 
 ######################################################################
 
+```
 
->  def self.show_record_method       
+>          def self.show_record_method       
 >                                                                     
 >                @@class_record_arr          
 >                                                                     
->                         end                                   
+>          end                                   
 
 #By adding "self"  to our method above, we are telling the class 
 #that  #show_record_method is not an instance method anymore
 #but it is a class method. The output is an error that indicates that our instance doesn't
 #have this method. Because of "self" it became a class method. See the error below
+```
 
 
 ----------------------ERROR------------------------------
+```
 > undefined method `show_record_method' for #<Mother_ufo_ship:0x00556fde60d698 @name="1st baby ship">
 > (repl):23:in `<main>'
+```
 
 --------------------------------------------------------
 
@@ -164,12 +200,16 @@ because only the mother ship class has it.
 
 So we can access this method by calling the class directly 
 
-> Mother_ufo_ship.show_record_method   ###<--- mother ship calling it's own method
-                                                                                       ###<--- baby ships don't have the method any longer
+```
+> Mother_ufo_ship.show_record_method   
+
+   ### mother ship calling it's own method                                                                                      
+	### baby ships don't have the method any longer
+```
 																		 
-###---------------------------------------------------
-###-the output same as before an array record of baby ships
-###--------------------------------------------------
+#############################################
+>  -the output same as before an array record of baby ships
+ 
 
 
 > => [#<Mother_ufo_ship:0x00561bd1f11768 @name="1st baby ship">, #<Mother_ufo_ship:0x00561bd1f11718 @name="2nd baby ship">]
@@ -180,6 +220,7 @@ So I guess like the romans used to say "Quod Erat Demonstrandum"
 
 The keyword "self" in the code below is used twice pointing at two different things
 
+```
 -------------------------------------------------------
 >    class Mother_ufo_ship  
 >   
@@ -188,20 +229,21 @@ The keyword "self" in the code below is used twice pointing at two different thi
 >           def initialize(baby_ship_name)
 >           
 >           @name=baby_ship_name
->           @@class_record_arr<<self      #<--self points to "itself the instance"
+>           @@class_record_arr<<self               # here self points to "itself the instance"
 >                                   
 >           end                     
->    
->   
->             def self.show_record_method    #<-- self points to "itself the class"
+>      
+>            
+>              def self.show_record_method        # here self points to "itself the class"
 >              
 >                @@class_record_arr 
 >          
->              end 
+>          end 
 >    
 >    end 
 > 
 -------------------------------------------------------
+```
 
 
 I am sure I have made some mistakes (the explanation turned out way longer then my 
