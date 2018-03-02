@@ -93,18 +93,20 @@ Part 1 Explanation
 >                          <--- every instance of that class
 ```
 
-def initialize(baby_ship_name) 
-             #Every baby ship is going to receive a name during  
-             # the initialization process
-    
-    @name=baby_ship_name       <--- the baby ship's name is getting assigned to an 
-                               <--- instance variable @name
-    @@class_record_arr<<self   <--- "self" here refers to the instance and not the class
-                               <--- So everytime a baby ship is created "self" is going 
-                               <--- to point to that baby ship and not the mother ship
-                               <--- and a record of every instance  is going inside  
-                               <--- our record array
-    end 
+```
+> def initialize(baby_ship_name) 
+>              #Every baby ship is going to receive a name during  
+>              # the initialization process
+>     
+>     @name=baby_ship_name       <--- the baby ship's name is getting assigned to an 
+>                                <--- instance variable @name
+>     @@class_record_arr<<self   <--- "self" here refers to the instance and not the class
+>                                <--- So everytime a baby ship is created "self" is going 
+>                                <--- to point to that baby ship and not the mother ship
+>                                <--- and a record of every instance  is going inside  
+>                                <--- our record array
+>     end 
+```
 
 `#########################################`
   
