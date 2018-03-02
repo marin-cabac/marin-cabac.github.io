@@ -26,11 +26,13 @@ So again, "Self" is going to change it's meaning within the same piece of code. 
 
 
 
+```
 ######### P A R T I ######################### 
 
-            where "Self" is referring(pointing) to the class 
+where "Self" is referring(pointing) to the class 
  
 #########################################
+```
 
 ```
 >               class Mother_ufo_ship   
@@ -51,7 +53,7 @@ So again, "Self" is going to change it's meaning within the same piece of code. 
 >             end
 ```
 
-#########################################
+`#########################################`
 
   ```
 a_ship=Mother_ufo_ship.new("1st baby ship")
@@ -61,7 +63,7 @@ a_ship=Mother_ufo_ship.new("1st baby ship")
 
 ```
 
- #########################################
+` #########################################`
 
  
 ```
@@ -72,12 +74,14 @@ a_ship=Mother_ufo_ship.new("1st baby ship")
 ```
 
 
+```
 
 #########################################
 
 Part 1 Explanation 
 
 #########################################
+```
 
 ```
 > @@class_record_arr=[]    
@@ -102,7 +106,7 @@ def initialize(baby_ship_name)
                                <--- our record array
     end 
 
-#########################################
+`#########################################`
   
 
 ```
@@ -119,7 +123,7 @@ def initialize(baby_ship_name)
        #    that is held at the mother ship.   
 ```
 			 
-#########################################
+`#########################################`
 ```
 
 > a_ship=Mother_ufo_ship.new("1st baby ship") 
@@ -149,9 +153,9 @@ def initialize(baby_ship_name)
 
 
 
-> Output for the above method call
+>` Output for the above method call`
 
-#########################################
+`#########################################`
 
 ```
 a_ship.show_record_method       <-----calling the instance method 
@@ -166,11 +170,13 @@ a_ship.show_record_method       <-----calling the instance method
 
 
  
+```
 #################################################
 
 PART 2 where a second "self" refers to the Class not the instance
 
 #################################################
+```
 
 ```
 
@@ -207,6 +213,7 @@ So we can access this method by calling the class directly
 	### baby ships don't have the method any longer
 ```
 																		 
+```
 #############################################
 >  -the output same as before an array record of baby ships
  
@@ -215,6 +222,7 @@ So we can access this method by calling the class directly
 > => [#<Mother_ufo_ship:0x00561bd1f11768 @name="1st baby ship">, #<Mother_ufo_ship:0x00561bd1f11718 @name="2nd baby ship">]
 
 ##########################################################
+```
 
 So I guess like the romans used to say "Quod Erat Demonstrandum" 
 
