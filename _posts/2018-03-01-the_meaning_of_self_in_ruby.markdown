@@ -201,8 +201,8 @@ PART 2 where a second "self" refers to the Class not the instance
 
 --------------------------------------------------------
 
-So once you use add "self" to the method  the baby ships can't use the method any more
-because only the mother ship class has it.
+So once you use add "self" to the method  the baby ships can't use the method anymore
+because the baby ships lost access to it and the "self" in front of the method means that only the mother ship class has acess to the method, in other words it became a class method.
 
 So we can access this method by calling the class directly 
 
