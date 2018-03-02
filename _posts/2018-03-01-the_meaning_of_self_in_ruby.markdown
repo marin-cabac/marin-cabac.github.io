@@ -255,6 +255,6 @@ The keyword "self" in the code below is used twice pointing at two different thi
 
 
 I am sure I have made some mistakes (the explanation turned out way longer then my 
-little brain is used to) So please feel free to correct me.  
+little brain is used to) So please feel free to correct me.  Namaste!
 
 
