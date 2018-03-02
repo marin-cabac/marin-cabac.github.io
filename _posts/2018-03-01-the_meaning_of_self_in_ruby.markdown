@@ -8,13 +8,13 @@ permalink:  the_meaning_of_self_in_ruby
 
 The idea for this post came from a conversation with one of my classmates at FLATIRON. Later I saw the same question asked on many different Ruby forums (as well as other programming  forums.) 
 
-Self in Ruby is often perceived as being a very confusing topic. The reason for this  is because, well, it is a very confusing topic.
-In my case  a huge obstacle in understanding certain subjects in programming is trying to decipher too much code at once. So often find myself in the position of taking somebody else's example and trying to simplify the code  by eliminating as many parts as possible in order to grasp the logic behind the code  So in a desperate attempt to shed some light on this infamous subject "The meaning of self in Ruby"  I will use a very basic examples and I will try to keep it as short simple as possible, so please bear with me. 
+Self in Ruby is often perceived as being a very confusing subject. This is happening because, well, it is a very confusing subject.
+In my case  a huge obstacle in understanding certain subjects in programming is trying to decipher too much code at once. So often I find myself  taking somebody else's example and trying to simplify the code  by eliminating as many parts of it as possible while leaving just the part that I am trying to understand. This can turn, at times, into a  very painful and long process   So in a desperate attempt to shed some light on this infamous subject "The meaning of self in Ruby"  I will use a very basic examples and I will try to keep it as short as simple and as clear as possible, so please bear with me. 
 
-First of all "self" is a reserved keyword in Ruby.  For example "self" in Ruby is the same as "this" in Java.
-"Self" refers to an object, the current object. However the object self refers can change on a whim so try to notice that change. 
+First of all  what is self? "self" is a reserved keyword in Ruby.  For example "self" in Ruby is the same as "this" in Java.
+"Self" refers to an object, the current object. However the meaning of  self even within the same portion of the code and sometimes for an unexperience programmer this sublte change can go unnoticed.
 
-In the following  example I am going to create a class named "Mother_ufo_ship" which is going to serve as 
+In my  example I am going to create a class named "Mother_ufo_ship" which is going to serve as 
 a blueprint for creating "baby_ufo_ships" (which are instances of Mother_ufo_ship).  My goal is to be able to illustrate that the same keyword "self" can be used  to point to  different things. 
 
 So I am going to use the keyword "self" twice: 
