@@ -8,7 +8,7 @@ permalink:  the_meaning_of_self_in_ruby
 
 The idea for this post came from a conversation with one of my classmates at FLATIRON. Later I saw the same question asked on many different Ruby forums (as well as other programming  forums.) 
 
-Self in Ruby is often perceived as being a very confusing subject. This is happening because, well, it is a very confusing subject.
+Self in Ruby is often considered  a very confusing subject. This is  because, well, it is a very confusing subject.
 In my case  a huge obstacle in understanding certain subjects in programming is trying to decipher too much code at once. So often I find myself  taking somebody else's example and trying to simplify the code  by eliminating as many parts of it as possible while leaving just the part that I am trying to understand. This can turn, at times, into a  very painful and long process   So in a desperate attempt to shed some light on this infamous subject "The meaning of self in Ruby"  I will use a very basic examples and I will try to keep it as short as simple and as clear as possible, so please bear with me. 
 
 First of all  what is self? "self" is a reserved keyword in Ruby.  For example "self" in Ruby is the same as "this" in Java.
@@ -255,6 +255,6 @@ The keyword "self" in the code below is used twice pointing at two different thi
 
 
 I am sure I have made some mistakes (the explanation turned out way longer then my 
-little brain is used to) So please feel free to correct me. We are all learning for this.
+little brain is used to) So please feel free to correct me.  
 
 
