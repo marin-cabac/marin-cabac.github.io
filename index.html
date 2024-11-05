@@ -16,24 +16,48 @@
             overflow: hidden;
             margin: 0;
         }
+        #game-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+        }
         #game {
             width: 30ch;
             height: 20em;
             white-space: pre;
             font-size: 20px;
-            margin-bottom: 10px;
+            border: 2px solid lime;
+            margin-bottom: 20px;
+        }
+        #controls {
+            position: absolute;
+            top: -30px;
+            right: 0;
+            display: flex;
+            gap: 10px;
         }
         button {
-            margin: 5px;
-            padding: 10px;
-            font-size: 16px;
+            padding: 5px 10px;
+            font-size: 14px;
+            background-color: lime;
+            color: black;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: darkgreen;
         }
     </style>
 </head>
 <body>
-    <div id="game"></div>
-    <button id="startButton">Start Game</button>
-    <button id="pauseButton">Pause Game</button>
+    <div id="game-container">
+        <div id="controls">
+            <button id="startButton">Start Game</button>
+            <button id="pauseButton">Pause Game</button>
+        </div>
+        <div id="game"></div>
+    </div>
     <script>
         const game = document.getElementById("game");
         const startButton = document.getElementById("startButton");
