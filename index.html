@@ -4,15 +4,42 @@
   <title>Green Matrix</title>
   <style>
     body {
-      background-color: #009900; /* Matrix green */
-      color: #90EE90; /* Light green */
+      background-color: #009900;
+      color: #90EE90;
       font-family: Arial, sans-serif;
       text-align: center;
+    }
+
+    button {
+      background-color: #90EE90;
+      color: #009900;
+      border: none;
+      padding: 15px 32px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 16px;
+      margin: 4px 2px;
+      cursor: pointer;
+    }
+
+    .effect {
+      background-image: linear-gradient(to right, red, orange, yellow, green, blue, indigo, violet);
+      animation: rainbow 3s infinite alternate;
+    }
+
+    @keyframes rainbow {
+      0% {
+        background-size: 0%;
+      }
+      100% {
+        background-size: 100%;
+      }
     }
   </style>
 </head>
 <body>
-  <h1>Hello, Peyton!</h1>
-  <p>This is a simple HTML page with a matrix green background.</p>
+  <h1>Green Matrix</h1>
+  <button onclick="this.classList.toggle('effect')">Click me</button>
 </body>
 </html>
