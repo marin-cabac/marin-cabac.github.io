@@ -17,7 +17,7 @@
             margin: 0;
         }
         #game {
-            width: 30ch;
+            width: 40ch; /* Increased width to allow more movement */
             height: 20em;
             white-space: pre;
             font-size: 20px;
@@ -28,10 +28,10 @@
     <div id="game"></div>
     <script>
         const game = document.getElementById("game");
-        const width = 30; // game area width
+        const width = 40; // increased game area width
         const height = 20; // game area height
 
-        let spaceshipPos = Math.floor(width / 2);
+        let spaceshipPos = Math.floor(width / 2) - 2; // Center the spaceship under bullets
         let bullets = [];
         let enemies = [];
         let score = 0;
@@ -44,7 +44,7 @@
         function render() {
             let output = "";
 
-            // Render enemies
+            // Render enemies and the spaceship
             for (let y = 0; y < height; y++) {
                 let line = "";
                 for (let x = 0; x < width; x++) {
@@ -67,11 +67,11 @@
         // Move spaceship left and right
         document.addEventListener("keydown", e => {
             if (e.key === "ArrowLeft" && spaceshipPos > 0) {
-                spaceshipPos--;
+                spaceshipPos = Math.max(spaceshipPos - 1, 0); // Move left
             } else if (e.key === "ArrowRight" && spaceshipPos < width - 5) {
-                spaceshipPos++;
+                spaceshipPos = Math.min(spaceshipPos + 1, width - 5); // Move right
             } else if (e.key === " ") {
-                bullets.push({ x: spaceshipPos + 2, y: height - 2 });
+                bullets.push({ x: spaceshipPos + 2, y: height - 2 }); // Fire bullet from center
             }
             render();
         });
