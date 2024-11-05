@@ -17,39 +17,36 @@
             margin: 0;
         }
         #game {
-            width: 40ch;
+            width: 30ch;
             height: 20em;
             white-space: pre;
             font-size: 20px;
-            margin-top: 20px;
-        }
-        .controls {
-            margin-top: 10px;
+            margin-bottom: 10px;
         }
         button {
-            font-size: 18px;
-            margin: 0 10px;
-            padding: 5px 10px;
+            margin: 5px;
+            padding: 10px;
+            font-size: 16px;
         }
     </style>
 </head>
 <body>
     <div id="game"></div>
-    <div class="controls">
-        <button onclick="startGame()">Start Game</button>
-        <button onclick="pauseGame()">Pause Game</button>
-    </div>
+    <button id="startButton">Start Game</button>
+    <button id="pauseButton">Pause Game</button>
     <script>
         const game = document.getElementById("game");
-        const width = 40; // game area width
+        const startButton = document.getElementById("startButton");
+        const pauseButton = document.getElementById("pauseButton");
+        const width = 30; // game area width
         const height = 20; // game area height
 
-        let spaceshipPos = Math.floor(width / 2) - 2;
+        let spaceshipPos = Math.floor(width / 2) - 2; // Center the spaceship under the bullets
         let bullets = [];
         let enemies = [];
         let score = 0;
-        let gameInterval = null;
         let isPaused = false;
+        let gameInterval;
 
         // Counter to control enemy speed
         let enemyMoveCounter = 0;
@@ -79,21 +76,49 @@
             game.textContent = output;
         }
 
-        // Move spaceship smoothly and shoot bullets
+        // Move spaceship left and right
         document.addEventListener("keydown", e => {
             if (e.key === "ArrowLeft" && spaceshipPos > 0) {
-                spaceshipPos--;
-            } else if (e.key === "ArrowRight" && spaceshipPos < width - 6) {
-                spaceshipPos++;
+                spaceshipPos = Math.max(spaceshipPos - 1, 0); // Move left
+            } else if (e.key === "ArrowRight" && spaceshipPos < width - 5) {
+                spaceshipPos = Math.min(spaceshipPos + 1, width - 5); // Move right
             } else if (e.key === " ") {
-                bullets.push({ x: spaceshipPos + 2, y: height - 2 });
+                bullets.push({ x: spaceshipPos + 2, y: height - 2 }); // Fire bullet
             }
             render();
         });
 
+        // Start the game
+        function startGame() {
+            if (isPaused) {
+                isPaused = false;
+                gameInterval = setInterval(update, 100);
+            } else {
+                resetGame();
+                isPaused = false;
+                gameInterval = setInterval(update, 100);
+            }
+        }
+
+        // Pause the game
+        function pauseGame() {
+            isPaused = true;
+            clearInterval(gameInterval);
+        }
+
+        // Reset game state
+        function resetGame() {
+            spaceshipPos = Math.floor(width / 2) - 2;
+            bullets = [];
+            enemies = [];
+            score = 0;
+            enemyMoveCounter = 0;
+            render();
+        }
+
         // Update game elements
         function update() {
-            if (isPaused) return; // Do not update if the game is paused
+            if (isPaused) return; // Stop updating if paused
 
             // Move bullets
             bullets = bullets.map(b => ({ x: b.x, y: b.y - 1 })).filter(b => b.y >= 0);
@@ -127,28 +152,17 @@
             // Check game over condition
             if (enemies.some(e => e.y === height - 1)) {
                 alert("Game Over! Score: " + score);
-                enemies = [];
-                bullets = [];
-                score = 0;
+                resetGame();
             }
 
             render();
         }
 
-        // Start the game
-        function startGame() {
-            if (!gameInterval) {
-                gameInterval = setInterval(update, 100);
-                isPaused = false;
-            }
-        }
+        // Set up event listeners for buttons
+        startButton.addEventListener("click", startGame);
+        pauseButton.addEventListener("click", pauseGame);
 
-        // Pause the game
-        function pauseGame() {
-            isPaused = !isPaused;
-        }
-
-        render(); // Initial render
+        render();
     </script>
 </body>
 </html>
