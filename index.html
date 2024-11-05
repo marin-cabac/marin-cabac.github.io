@@ -1,45 +1,118 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Green Matrix</title>
-  <style>
-    body {
-      background-color: #009900;
-      color: #90EE90;
-      font-family: Arial, sans-serif;
-      text-align: center;
-    }
-
-    button {
-      background-color: #90EE90;
-      color: #009900;
-      border: none;
-      padding: 15px 32px;
-      text-align: center;
-      text-decoration: none;
-      display: inline-block;
-      font-size: 16px;
-      margin: 4px 2px;
-      cursor: pointer;
-    }
-
-    .effect {
-      background-image: linear-gradient(to right, red, orange, yellow, green, blue, indigo, violet);
-      animation: rainbow 3s infinite alternate;
-    }
-
-    @keyframes rainbow {
-      0% {
-        background-size: 0%;
-      }
-      100% {
-        background-size: 100%;
-      }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ASCII Space Invaders</title>
+    <style>
+        body {
+            font-family: monospace;
+            color: lime;
+            background-color: black;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+            margin: 0;
+        }
+        #game {
+            width: 30ch;
+            height: 20em;
+            white-space: pre;
+            font-size: 20px;
+        }
+    </style>
 </head>
 <body>
-  <h1>"Reality called… I hung up."</h1>
-  <button onclick="this.classList.toggle('effect')">Click me</button>
+    <div id="game"></div>
+    <script>
+        const game = document.getElementById("game");
+        const width = 30; // game area width
+        const height = 20; // game area height
+
+        let spaceshipPos = Math.floor(width / 2);
+        let bullets = [];
+        let enemies = [];
+        let score = 0;
+
+        // Update game display
+        function render() {
+            let output = "";
+
+            // Render enemies
+            for (let y = 0; y < height; y++) {
+                let line = "";
+                for (let x = 0; x < width; x++) {
+                    if (y === height - 1 && x === spaceshipPos) {
+                        line += "<=!=>"; // spaceship
+                        x += 4;
+                    } else if (bullets.some(b => b.x === x && b.y === y)) {
+                        line += "o"; // bullet
+                    } else if (enemies.some(e => e.x === x && e.y === y)) {
+                        line += "M"; // enemy
+                    } else {
+                        line += " "; // empty space
+                    }
+                }
+                output += line + "\n";
+            }
+            game.textContent = output;
+        }
+
+        // Move spaceship left and right
+        document.addEventListener("keydown", e => {
+            if (e.key === "ArrowLeft" && spaceshipPos > 0) {
+                spaceshipPos--;
+            } else if (e.key === "ArrowRight" && spaceshipPos < width - 5) {
+                spaceshipPos++;
+            } else if (e.key === " ") {
+                bullets.push({ x: spaceshipPos + 2, y: height - 2 });
+            }
+            render();
+        });
+
+        // Update game elements
+        function update() {
+            // Move bullets
+            bullets = bullets.map(b => ({ x: b.x, y: b.y - 1 })).filter(b => b.y >= 0);
+
+            // Spawn enemies randomly
+            if (Math.random() < 0.1) {
+                enemies.push({ x: Math.floor(Math.random() * width), y: 0 });
+            }
+
+            // Move enemies
+            enemies = enemies.map(e => ({ x: e.x, y: e.y + 1 }));
+
+            // Check for collisions
+            bullets.forEach((bullet, bulletIdx) => {
+                enemies.forEach((enemy, enemyIdx) => {
+                    if (bullet.x === enemy.x && bullet.y === enemy.y) {
+                        bullets.splice(bulletIdx, 1); // remove bullet
+                        enemies.splice(enemyIdx, 1); // remove enemy
+                        score++;
+                    }
+                });
+            });
+
+            // Remove off-screen enemies
+            enemies = enemies.filter(e => e.y < height);
+
+            // Check game over condition
+            if (enemies.some(e => e.y === height - 1)) {
+                alert("Game Over! Score: " + score);
+                enemies = [];
+                bullets = [];
+                score = 0;
+            }
+
+            render();
+        }
+
+        // Game loop
+        setInterval(update, 100);
+        render();
+    </script>
 </body>
 </html>
