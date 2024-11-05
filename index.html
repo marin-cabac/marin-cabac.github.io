@@ -10,31 +10,46 @@
             color: lime;
             background-color: black;
             display: flex;
-            justify-content: center;
+            flex-direction: column;
             align-items: center;
             height: 100vh;
             overflow: hidden;
             margin: 0;
         }
         #game {
-            width: 30ch;
+            width: 40ch;
             height: 20em;
             white-space: pre;
             font-size: 20px;
+            margin-top: 20px;
+        }
+        .controls {
+            margin-top: 10px;
+        }
+        button {
+            font-size: 18px;
+            margin: 0 10px;
+            padding: 5px 10px;
         }
     </style>
 </head>
 <body>
     <div id="game"></div>
+    <div class="controls">
+        <button onclick="startGame()">Start Game</button>
+        <button onclick="pauseGame()">Pause Game</button>
+    </div>
     <script>
         const game = document.getElementById("game");
-        const width = 30; // game area width
+        const width = 40; // game area width
         const height = 20; // game area height
 
-        let spaceshipPos = Math.floor(width / 2);
+        let spaceshipPos = Math.floor(width / 2) - 2;
         let bullets = [];
         let enemies = [];
         let score = 0;
+        let gameInterval = null;
+        let isPaused = false;
 
         // Counter to control enemy speed
         let enemyMoveCounter = 0;
@@ -64,11 +79,11 @@
             game.textContent = output;
         }
 
-        // Move spaceship left and right
+        // Move spaceship smoothly and shoot bullets
         document.addEventListener("keydown", e => {
             if (e.key === "ArrowLeft" && spaceshipPos > 0) {
                 spaceshipPos--;
-            } else if (e.key === "ArrowRight" && spaceshipPos < width - 5) {
+            } else if (e.key === "ArrowRight" && spaceshipPos < width - 6) {
                 spaceshipPos++;
             } else if (e.key === " ") {
                 bullets.push({ x: spaceshipPos + 2, y: height - 2 });
@@ -78,6 +93,8 @@
 
         // Update game elements
         function update() {
+            if (isPaused) return; // Do not update if the game is paused
+
             // Move bullets
             bullets = bullets.map(b => ({ x: b.x, y: b.y - 1 })).filter(b => b.y >= 0);
 
@@ -118,9 +135,20 @@
             render();
         }
 
-        // Game loop
-        setInterval(update, 100);
-        render();
+        // Start the game
+        function startGame() {
+            if (!gameInterval) {
+                gameInterval = setInterval(update, 100);
+                isPaused = false;
+            }
+        }
+
+        // Pause the game
+        function pauseGame() {
+            isPaused = !isPaused;
+        }
+
+        render(); // Initial render
     </script>
 </body>
 </html>
