@@ -1,192 +1,45 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ASCII Space Invaders</title>
-    <style>
-        body {
-            font-family: monospace;
-            color: lime;
-            background-color: black;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            height: 100vh;
-            overflow: hidden;
-            margin: 0;
-        }
-        #game-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            position: relative;
-        }
-        #game {
-            width: 30ch;
-            height: 20em;
-            white-space: pre;
-            font-size: 20px;
-            border: 2px solid lime;
-            margin-bottom: 20px;
-        }
-        #controls {
-            position: absolute;
-            top: -30px;
-            right: 0;
-            display: flex;
-            gap: 10px;
-        }
-        button {
-            padding: 5px 10px;
-            font-size: 14px;
-            background-color: lime;
-            color: black;
-            border: none;
-            cursor: pointer;
-        }
-        button:hover {
-            background-color: darkgreen;
-        }
-    </style>
-</head>
-<body>
-    <div id="game-container">
-        <div id="controls">
-            <button id="startButton">Start Game</button>
-            <button id="pauseButton">Pause Game</button>
-        </div>
-        <div id="game"></div>
-    </div>
-    <script>
-        const game = document.getElementById("game");
-        const startButton = document.getElementById("startButton");
-        const pauseButton = document.getElementById("pauseButton");
-        const width = 30; // game area width
-        const height = 20; // game area height
+// Add a counter variable to control enemy speed
+let enemyMoveCounter = 0;
+const enemySpeed = 5; // Adjust this value to control speed (higher means slower)
 
-        let spaceshipPos = Math.floor(width / 2) - 2; // Center the spaceship under the bullets
-        let bullets = [];
-        let enemies = [];
-        let score = 0;
-        let isPaused = false;
-        let gameInterval;
+// Update game elements
+function update() {
+    // Move bullets
+    bullets = bullets.map(b => ({ x: b.x, y: b.y - 1 })).filter(b => b.y >= 0);
 
-        // Counter to control enemy speed
-        let enemyMoveCounter = 0;
-        const enemySpeed = 5; // Increase this value to slow down enemies
+    // Spawn enemies randomly
+    if (Math.random() < 0.1) {
+        enemies.push({ x: Math.floor(Math.random() * width), y: 0 });
+    }
 
-        // Update game display
-        function render() {
-            let output = "";
+    // Move enemies at a slower rate based on counter
+    enemyMoveCounter++;
+    if (enemyMoveCounter >= enemySpeed) {
+        enemies = enemies.map(e => ({ x: e.x, y: e.y + 1 }));
+        enemyMoveCounter = 0; // Reset the counter after moving enemies
+    }
 
-            // Render enemies
-            for (let y = 0; y < height; y++) {
-                let line = "";
-                for (let x = 0; x < width; x++) {
-                    if (y === height - 1 && x === spaceshipPos) {
-                        line += "<=!=>"; // spaceship
-                        x += 4;
-                    } else if (bullets.some(b => b.x === x && b.y === y)) {
-                        line += "o"; // bullet
-                    } else if (enemies.some(e => e.x === x && e.y === y)) {
-                        line += "M"; // enemy
-                    } else {
-                        line += " "; // empty space
-                    }
-                }
-                output += line + "\n";
+    // Check for collisions
+    bullets.forEach((bullet, bulletIdx) => {
+        enemies.forEach((enemy, enemyIdx) => {
+            if (bullet.x === enemy.x && bullet.y === enemy.y) {
+                bullets.splice(bulletIdx, 1); // remove bullet
+                enemies.splice(enemyIdx, 1); // remove enemy
+                score++;
             }
-            game.textContent = output;
-        }
-
-        // Move spaceship left and right
-        document.addEventListener("keydown", e => {
-            if (e.key === "ArrowLeft" && spaceshipPos > 0) {
-                spaceshipPos = Math.max(spaceshipPos - 1, 0); // Move left
-            } else if (e.key === "ArrowRight" && spaceshipPos < width - 5) {
-                spaceshipPos = Math.min(spaceshipPos + 1, width - 5); // Move right
-            } else if (e.key === " ") {
-                bullets.push({ x: spaceshipPos + 2, y: height - 2 }); // Fire bullet
-            }
-            render();
         });
+    });
 
-        // Start the game
-        function startGame() {
-            if (isPaused) {
-                isPaused = false;
-                gameInterval = setInterval(update, 100);
-            } else {
-                resetGame();
-                isPaused = false;
-                gameInterval = setInterval(update, 100);
-            }
-        }
+    // Remove off-screen enemies
+    enemies = enemies.filter(e => e.y < height);
 
-        // Pause the game
-        function pauseGame() {
-            isPaused = true;
-            clearInterval(gameInterval);
-        }
+    // Check game over condition
+    if (enemies.some(e => e.y === height - 1)) {
+        alert("Game Over! Score: " + score);
+        enemies = [];
+        bullets = [];
+        score = 0;
+    }
 
-        // Reset game state
-        function resetGame() {
-            spaceshipPos = Math.floor(width / 2) - 2;
-            bullets = [];
-            enemies = [];
-            score = 0;
-            enemyMoveCounter = 0;
-            render();
-        }
-
-        // Update game elements
-        function update() {
-            if (isPaused) return; // Stop updating if paused
-
-            // Move bullets
-            bullets = bullets.map(b => ({ x: b.x, y: b.y - 1 })).filter(b => b.y >= 0);
-
-            // Spawn enemies randomly
-            if (Math.random() < 0.1) {
-                enemies.push({ x: Math.floor(Math.random() * width), y: 0 });
-            }
-
-            // Move enemies at a slower rate based on counter
-            enemyMoveCounter++;
-            if (enemyMoveCounter >= enemySpeed) {
-                enemies = enemies.map(e => ({ x: e.x, y: e.y + 1 }));
-                enemyMoveCounter = 0; // Reset the counter after moving enemies
-            }
-
-            // Check for collisions
-            bullets.forEach((bullet, bulletIdx) => {
-                enemies.forEach((enemy, enemyIdx) => {
-                    if (bullet.x === enemy.x && bullet.y === enemy.y) {
-                        bullets.splice(bulletIdx, 1); // remove bullet
-                        enemies.splice(enemyIdx, 1); // remove enemy
-                        score++;
-                    }
-                });
-            });
-
-            // Remove off-screen enemies
-            enemies = enemies.filter(e => e.y < height);
-
-            // Check game over condition
-            if (enemies.some(e => e.y === height - 1)) {
-                alert("Game Over! Score: " + score);
-                resetGame();
-            }
-
-            render();
-        }
-
-        // Set up event listeners for buttons
-        startButton.addEventListener("click", startGame);
-        pauseButton.addEventListener("click", pauseGame);
-
-        render();
-    </script>
-</body>
-</html>
+    render();
+}
