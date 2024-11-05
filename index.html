@@ -36,6 +36,10 @@
         let enemies = [];
         let score = 0;
 
+        // Counter to control enemy speed
+        let enemyMoveCounter = 0;
+        const enemySpeed = 5; // Increase this value to slow down enemies
+
         // Update game display
         function render() {
             let output = "";
@@ -82,8 +86,12 @@
                 enemies.push({ x: Math.floor(Math.random() * width), y: 0 });
             }
 
-            // Move enemies
-            enemies = enemies.map(e => ({ x: e.x, y: e.y + 1 }));
+            // Move enemies at a slower rate based on counter
+            enemyMoveCounter++;
+            if (enemyMoveCounter >= enemySpeed) {
+                enemies = enemies.map(e => ({ x: e.x, y: e.y + 1 }));
+                enemyMoveCounter = 0; // Reset the counter after moving enemies
+            }
 
             // Check for collisions
             bullets.forEach((bullet, bulletIdx) => {
