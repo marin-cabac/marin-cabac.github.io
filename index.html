@@ -15,7 +15,13 @@
             height: 100vh;
             overflow: hidden;
             margin: 0;
+        }
+        #score-area {
+            display: flex;
             flex-direction: column;
+            align-items: flex-end;
+            margin-right: 20px;
+            font-size: 16px;
         }
         #game {
             width: 40ch; /* Increased width to allow more movement */
@@ -23,31 +29,28 @@
             white-space: pre;
             font-size: 20px;
             border: 2px solid lime;
-            margin-bottom: 10px;
             position: relative;
-        }
-        #score {
-            position: absolute;
-            top: 5px;
-            left: 5px;
-            font-size: 16px;
         }
     </style>
 </head>
 <body>
-    <div id="game">
-        <div id="score">Score: 0</div>
+    <div id="score-area">
+        <div id="hits">Hits: 0</div>
+        <div id="misses">Misses: 0</div>
     </div>
+    <div id="game"></div>
     <script>
         const game = document.getElementById("game");
-        const scoreDisplay = document.getElementById("score");
+        const hitsDisplay = document.getElementById("hits");
+        const missesDisplay = document.getElementById("misses");
         const width = 40; // game area width
         const height = 20; // game area height
 
         let spaceshipPos = Math.floor(width / 2) - 2; // Center the spaceship under bullets
         let bullets = [];
         let enemies = [];
-        let score = 0;
+        let hits = 0;
+        let misses = 0;
 
         // Counter to control enemy speed
         let enemyMoveCounter = 0;
@@ -75,7 +78,10 @@
                 output += line + "\n";
             }
             game.textContent = output;
-            scoreDisplay.textContent = `Score: ${score}`;
+
+            // Update score displays
+            hitsDisplay.textContent = `Hits: ${hits}`;
+            missesDisplay.textContent = `Misses: ${misses}`;
         }
 
         // Move spaceship left and right
@@ -113,10 +119,14 @@
                     if (bullet.x === enemy.x && bullet.y === enemy.y) {
                         bullets.splice(bulletIdx, 1); // remove bullet
                         enemies.splice(enemyIdx, 1); // remove enemy
-                        score++;
+                        hits++;
                     }
                 });
             });
+
+            // Count enemies that reached the bottom as "missed"
+            const newMisses = enemies.filter(e => e.y >= height).length;
+            misses += newMisses;
 
             // Remove off-screen enemies
             enemies = enemies.filter(e => e.y < height);
