@@ -80,15 +80,15 @@
             game.textContent = output;
 
             // Update score displays
-            hitsDisplay.textContent = `HITS: ${hits}`;
-            missesDisplay.textContent = `MISSES: ${misses}`;
+            hitsDisplay.textContent = `Hits: ${hits}`;
+            missesDisplay.textContent = `Misses: ${misses}`;
         }
 
         // Move spaceship left and right
         document.addEventListener("keydown", e => {
-            if (e.key === "ArrowLeft" && spaceshipPos > 0) {
+            if (e.key === "ArrowLeft" && spaceshipPos + 2 > 0) {
                 spaceshipPos--; // Move left
-            } else if (e.key === "ArrowRight" && spaceshipPos < width - 5) {
+            } else if (e.key === "ArrowRight" && spaceshipPos + 2 < width - 1) {
                 spaceshipPos++; // Move right
             } else if (e.key === " ") {
                 bullets.push({ x: spaceshipPos + 2, y: height - 2 }); // Fire bullet from center
