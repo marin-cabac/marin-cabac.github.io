@@ -35,8 +35,8 @@
 </head>
 <body>
     <div id="score-area">
-        <div id="hits">Hits: 0</div>
-        <div id="misses">Misses: 0</div>
+        <div id="hits">HITS: 0</div>
+        <div id="misses">MISSES: 0</div>
     </div>
     <div id="game"></div>
     <script>
@@ -67,10 +67,10 @@
                     // Render the spaceship, including at the far left edge
                     if (y === height - 1 && x === spaceshipPos) {
                         if (spaceshipPos === 0) {
-                            line += "(=!=)"; // Render full spaceship at left edge
+                            line += "<=!=>"; // Render full spaceship at left edge without skipping characters
                         } else {
-                            line += "(=!=)";
-                            x += 4;
+                            line += "<=!=>";
+                            x += 4; // Skip over the rest of the spaceship width for all other positions
                         }
                     } else if (bullets.some(b => b.x === x && b.y === y)) {
                         line += "o"; // bullet
