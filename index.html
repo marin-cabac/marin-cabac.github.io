@@ -80,10 +80,10 @@
 
         // Move spaceship left and right
         document.addEventListener("keydown", e => {
-            if (e.key === "ArrowLeft" && spaceshipPos > 0) {
-                spaceshipPos = Math.max(spaceshipPos - 1, 0); // Move left
-            } else if (e.key === "ArrowRight" && spaceshipPos < width - 5) {
-                spaceshipPos = Math.min(spaceshipPos + 1, width - 5); // Move right
+            if (e.key === "ArrowLeft" && spaceshipPos > 2) {
+                spaceshipPos--; // Move left
+            } else if (e.key === "ArrowRight" && spaceshipPos < width - 3) {
+                spaceshipPos++; // Move right
             } else if (e.key === " ") {
                 bullets.push({ x: spaceshipPos + 2, y: height - 2 }); // Fire bullet from center
             }
