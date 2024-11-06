@@ -15,20 +15,33 @@
             height: 100vh;
             overflow: hidden;
             margin: 0;
+            flex-direction: column;
         }
         #game {
             width: 40ch; /* Increased width to allow more movement */
             height: 20em;
             white-space: pre;
             font-size: 20px;
+            border: 2px solid lime;
+            margin-bottom: 10px;
+            position: relative;
+        }
+        #score {
+            position: absolute;
+            top: 5px;
+            left: 5px;
+            font-size: 16px;
         }
     </style>
 </head>
 <body>
-    <div id="game"></div>
+    <div id="game">
+        <div id="score">Score: 0</div>
+    </div>
     <script>
         const game = document.getElementById("game");
-        const width = 40; // increased game area width
+        const scoreDisplay = document.getElementById("score");
+        const width = 40; // game area width
         const height = 20; // game area height
 
         let spaceshipPos = Math.floor(width / 2) - 2; // Center the spaceship under bullets
@@ -62,6 +75,7 @@
                 output += line + "\n";
             }
             game.textContent = output;
+            scoreDisplay.textContent = `Score: ${score}`;
         }
 
         // Move spaceship left and right
@@ -106,14 +120,6 @@
 
             // Remove off-screen enemies
             enemies = enemies.filter(e => e.y < height);
-
-            // Check game over condition
-            if (enemies.some(e => e.y === height - 1)) {
-                alert("Game Over! Score: " + score);
-                enemies = [];
-                bullets = [];
-                score = 0;
-            }
 
             render();
         }
