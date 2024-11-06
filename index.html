@@ -64,10 +64,12 @@
                 for (let x = 0; x < width; x++) {
                     // Render the spaceship
                     if (y === height - 1 && x === spaceshipPos) {
-                        if (spaceshipPos === -2) {
+                        if (spaceshipPos <= 0) {
                             line += "=!=> "; // Display entire spaceship at the far left
-                        } else if (spaceshipPos === width - 3) {
+                            x += 4; // Skip the remaining part of the spaceship width
+                        } else if (spaceshipPos >= width - 4) {
                             line += " <=!="; // Display entire spaceship at the far right
+                            x += 4; // Skip the remaining part of the spaceship width
                         } else {
                             line += "<=!=>";
                             x += 4; // Skip the remaining part of the spaceship width
@@ -91,9 +93,9 @@
 
         // Move spaceship left and right
         document.addEventListener("keydown", e => {
-            if (e.key === "ArrowLeft" && spaceshipPos > -2) {
+            if (e.key === "ArrowLeft" && spaceshipPos > 0) { // Updated boundary for left
                 spaceshipPos--; // Move left
-            } else if (e.key === "ArrowRight" && spaceshipPos < width - 3) {
+            } else if (e.key === "ArrowRight" && spaceshipPos < width - 5) { // Updated boundary for right
                 spaceshipPos++; // Move right
             } else if (e.key === " ") {
                 bullets.push({ x: spaceshipPos + 2, y: height - 2 }); // Fire bullet from center
