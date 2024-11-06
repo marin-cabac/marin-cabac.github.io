@@ -64,9 +64,14 @@
             for (let y = 0; y < height; y++) {
                 let line = "";
                 for (let x = 0; x < width; x++) {
+                    // Render the spaceship, including at the far left edge
                     if (y === height - 1 && x === spaceshipPos) {
-                        line += "<=!=>"; // spaceship
-                        x += 4;
+                        if (spaceshipPos === 0) {
+                            line += "(=!=)"; // Render full spaceship at left edge
+                        } else {
+                            line += "(=!=)";
+                            x += 4;
+                        }
                     } else if (bullets.some(b => b.x === x && b.y === y)) {
                         line += "o"; // bullet
                     } else if (enemies.some(e => e.x === x && e.y === y)) {
@@ -80,8 +85,8 @@
             game.textContent = output;
 
             // Update score displays
-            hitsDisplay.textContent = `Hits: ${hits}`;
-            missesDisplay.textContent = `Misses: ${misses}`;
+            hitsDisplay.textContent = `HITS: ${hits}`;
+            missesDisplay.textContent = `MISSES: ${misses}`;
         }
 
         // Move spaceship left and right
