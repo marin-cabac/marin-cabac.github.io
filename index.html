@@ -67,12 +67,8 @@
                     // Render the spaceship on the bottom row at its position
                     if (y === height - 1 && x === spaceshipPos + spaceshipCenter) {
                         line += "!";
-                    } else if (y === height - 1 && x === spaceshipPos) {
-                        line += "<=";
-                        x++;
-                    } else if (y === height - 1 && x === spaceshipPos + 3) {
-                        line += "=>";
-                        x++;
+                    } else if (y === height - 1 && x >= spaceshipPos && x < spaceshipPos + spaceshipString.length) {
+                        line += spaceshipString[x - spaceshipPos];
                     } else if (bullets.some(b => b.x === x && b.y === y)) {
                         line += "o"; // bullet
                     } else if (enemies.some(e => e.x === x && e.y === y)) {
@@ -86,15 +82,15 @@
             game.textContent = output;
 
             // Update score displays
-            hitsDisplay.textContent = `HITS: ${hits}`;
+            hitsDisplay.textContent = `H I T S: ${hits}`;
             missesDisplay.textContent = `MISSES: ${misses}`;
         }
 
         // Move spaceship left and right
         document.addEventListener("keydown", e => {
-            if (e.key === "ArrowLeft" && spaceshipPos > -spaceshipCenter) {
+            if (e.key === "ArrowLeft" && spaceshipPos >= -spaceshipCenter) {
                 spaceshipPos--; // Move left, allowing the spaceship's center to go to the edge
-            } else if (e.key === "ArrowRight" && spaceshipPos < width - spaceshipCenter - 2) {
+            } else if (e.key === "ArrowRight" && spaceshipPos <= width - spaceshipCenter) {
                 spaceshipPos++; // Move right, allowing the spaceship's center to go to the edge
             } else if (e.key === " ") {
                 bullets.push({ x: spaceshipPos + spaceshipCenter, y: height - 2 }); // Fire bullet from center `!`
