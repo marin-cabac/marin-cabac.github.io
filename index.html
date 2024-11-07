@@ -80,7 +80,7 @@
             game.textContent = output;
 
             // Update score displays
-            hitsDisplay.textContent = `HITS: ${hits}`;
+            hitsDisplay.textContent = `H I T S: ${hits}`;
             missesDisplay.textContent = `MISSES: ${misses}`;
         }
 
@@ -108,7 +108,7 @@
 
             // Move enemies at a slower rate based on counter
             enemyMoveCounter++;
-            if (enemyMoveCounter >= enemySpeed) {
+            if ( enemyMoveCounter >= enemySpeed) {
                 enemies = enemies.map(e => ({ x: e.x, y: e.y + 1 }));
                 enemyMoveCounter = 0; // Reset the counter after moving enemies
             }
