@@ -97,6 +97,7 @@
 
         // Move spaceship left and right
         document.addEventListener("keydown", e => {
+            console.log("Key pressed:", e.key); // Debugging log to see if keydown is working
             if (e.key === "ArrowLeft" && spaceshipPos > -spaceshipCenter) {
                 spaceshipPos--; // Move left, allowing it to go slightly out of bounds
             } else if (e.key === "ArrowRight" && spaceshipPos < width - spaceshipString.length + spaceshipCenter) {
