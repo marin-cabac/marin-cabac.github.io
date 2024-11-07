@@ -65,9 +65,7 @@
                 let line = "";
                 for (let x = 0; x < width; x++) {
                     // Render the spaceship on the bottom row at its position
-                    if (y === height - 1 && x === spaceshipPos + spaceshipCenter) {
-                        line += "!";
-                    } else if (y === height - 1 && x >= spaceshipPos && x < spaceshipPos + spaceshipString.length) {
+                    if (y === height - 1 && x >= spaceshipPos && x < spaceshipPos + spaceshipString.length) {
                         line += spaceshipString[x - spaceshipPos];
                     } else if (bullets.some(b => b.x === x && b.y === y)) {
                         line += "o"; // bullet
@@ -82,7 +80,7 @@
             game.textContent = output;
 
             // Update score displays
-            hitsDisplay.textContent = `H I T S: ${hits}`;
+            hitsDisplay.textContent = `HITS: ${hits}`;
             missesDisplay.textContent = `MISSES: ${misses}`;
         }
 
@@ -128,10 +126,14 @@
                 enemyMoveCounter = 0; // Reset the counter after moving enemies
             }
 
-            // Check for collisions
+            // Define collision tolerance
+            const collisionTolerance = 1;
+
+            // Check for collisions with tolerance
             bullets.forEach((bullet, bulletIdx) => {
                 enemies.forEach((enemy, enemyIdx) => {
-                    if (bullet.x === enemy.x && bullet.y === enemy.y) {
+                    // Check proximity instead of exact match
+                    if (Math.abs(bullet.x - enemy.x) <= collisionTolerance && Math.abs(bullet.y - enemy.y) <= collisionTolerance) {
                         bullets.splice(bulletIdx, 1); // remove bullet
                         enemies.splice(enemyIdx, 1); // remove enemy
                         hits++;
