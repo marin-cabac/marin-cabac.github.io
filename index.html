@@ -82,7 +82,7 @@
             game.textContent = output;
 
             // Update score displays
-            hitsDisplay.textContent = `H I T S: ${hits}`;
+            hitsDisplay.textContent = `HITS: ${hits}`;
             missesDisplay.textContent = `MISSES: ${misses}`;
         }
 
@@ -136,8 +136,8 @@
             render();
         }
 
-        // Game loop
-        setInterval(update, 100);
+        // Game loop with faster bullet speed
+        setInterval(update, 50); // Increase the frequency to make bullets move faster
         render();
     </script>
 </body>
