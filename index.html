@@ -65,7 +65,13 @@
                 let line = "";
                 for (let x = 0; x < width; x++) {
                     if (y === height - 1 && x === spaceshipPos) {
-                        line += spaceshipString;
+                        if (spaceshipPos < 0) {
+                            // Display only the visible part of the spaceship on the left
+                            line += spaceshipString.slice(-spaceshipPos);
+                        } else {
+                            // Display the entire spaceship normally
+                            line += spaceshipString;
+                        }
                         x += spaceshipString.length - 1; // Skip the rest of the spaceship width
                     } else if (bullets.some(b => b.x === x && b.y === y)) {
                         line += "o"; // bullet
@@ -80,7 +86,7 @@
             game.textContent = output;
 
             // Update score displays
-            hitsDisplay.textContent = `HITS: ${hits}`;
+            hitsDisplay.textContent = `HITS => ${hits}`;
             missesDisplay.textContent = `MISSES: ${misses}`;
         }
 
