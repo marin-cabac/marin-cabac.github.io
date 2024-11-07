@@ -82,24 +82,37 @@
             game.textContent = output;
 
             // Update score displays
-            hitsDisplay.textContent = `HITS: ${hits}`;
+            hitsDisplay.textContent = `H I T S: ${hits}`;
             missesDisplay.textContent = `MISSES: ${misses}`;
         }
 
-        // Move spaceship left and right
+        // Move spaceship left and right and shoot
+        let keys = {};
+
         document.addEventListener("keydown", e => {
-            if (e.key === "ArrowLeft" && spaceshipPos >= -spaceshipCenter) {
-                spaceshipPos--; // Move left, allowing the spaceship's center to go to the edge
-            } else if (e.key === "ArrowRight" && spaceshipPos <= width - spaceshipCenter) {
-                spaceshipPos++; // Move right, allowing the spaceship's center to go to the edge
-            } else if (e.key === " ") {
+            keys[e.key] = true;
+            if (e.key === " ") {
                 bullets.push({ x: spaceshipPos + spaceshipCenter, y: height - 2 }); // Fire bullet from center `!`
             }
-            render();
         });
+
+        document.addEventListener("keyup", e => {
+            keys[e.key] = false;
+        });
+
+        function handleMovement() {
+            if (keys["ArrowLeft"] && spaceshipPos >= -spaceshipCenter) {
+                spaceshipPos--; // Move left, allowing the spaceship's center to go to the edge
+            }
+            if (keys["ArrowRight"] && spaceshipPos <= width - spaceshipCenter) {
+                spaceshipPos++; // Move right, allowing the spaceship's center to go to the edge
+            }
+        }
 
         // Update game elements
         function update() {
+            handleMovement();
+
             // Move bullets
             bullets = bullets.map(b => ({ x: b.x, y: b.y - 1 })).filter(b => b.y >= 0);
 
