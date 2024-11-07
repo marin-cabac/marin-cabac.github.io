@@ -63,19 +63,9 @@
             for (let y = 0; y < height; y++) {
                 let line = "";
                 for (let x = 0; x < width; x++) {
-                    if (y === height - 1) {
-                        if (spaceshipPos <= 0) {
-                            // Display entire spaceship at the far left
-                            line += spaceshipString;
-                        } else if (spaceshipPos >= width - spaceshipString.length) {
-                            // Display entire spaceship at the far right
-                            line += spaceshipString;
-                        } else {
-                            // Display partial spaceship based on remaining space
-                            const remainingSpace = width - spaceshipPos - 1;
-                            line += spaceshipString.slice(0, remainingSpace);
-                        }
-                        x += spaceshipString.length - 1; // Skip the remaining part of the spaceship width
+                    if (y === height - 1 && x === spaceshipPos) {
+                        line += spaceshipString;
+                        x += spaceshipString.length - 1; // Skip rest of spaceship width
                     } else if (bullets.some(b => b.x === x && b.y === y)) {
                         line += "o"; // bullet
                     } else if (enemies.some(e => e.x === x && e.y === y)) {
@@ -89,8 +79,8 @@
             game.textContent = output;
 
             // Update score displays
-            hitsDisplay.textContent = `H I T S: ${hits}`;
-            missesDisplay.textContent = 'MISSES: ${misses}`;
+            hitsDisplay.textContent = `HITS: ${hits}`;
+            missesDisplay.textContent = `MISSES: ${misses}`;
         }
 
         // Move spaceship left and right
