@@ -64,15 +64,20 @@
             for (let y = 0; y < height; y++) {
                 let line = "";
                 for (let x = 0; x < width; x++) {
-                    if (y === height - 1 && x === spaceshipPos) {
-                        if (spaceshipPos < 0) {
-                            // Display only the visible part of the spaceship on the left
-                            line += spaceshipString.slice(-spaceshipPos);
-                        } else {
-                            // Display the entire spaceship normally
-                            line += spaceshipString;
+                    if (y === height - 1) {
+                        if (x === spaceshipPos) {
+                            if (spaceshipPos < 0) {
+                                // Display the right part of the spaceship if it's partially offscreen to the left
+                                line += spaceshipString.slice(-spaceshipPos);
+                            } else if (spaceshipPos >= width - spaceshipString.length) {
+                                // Display the left part of the spaceship if it's partially offscreen to the right
+                                line += spaceshipString.slice(0, width - spaceshipPos);
+                            } else {
+                                // Display the entire spaceship normally
+                                line += spaceshipString;
+                            }
+                            x += spaceshipString.length - 1; // Skip the remaining part of the spaceship width
                         }
-                        x += spaceshipString.length - 1; // Skip the rest of the spaceship width
                     } else if (bullets.some(b => b.x === x && b.y === y)) {
                         line += "o"; // bullet
                     } else if (enemies.some(e => e.x === x && e.y === y)) {
@@ -86,7 +91,7 @@
             game.textContent = output;
 
             // Update score displays
-            hitsDisplay.textContent = `HITS => ${hits}`;
+            hitsDisplay.textContent = `HITS: ${hits}`;
             missesDisplay.textContent = `MISSES: ${misses}`;
         }
 
