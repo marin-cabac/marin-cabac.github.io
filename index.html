@@ -64,20 +64,9 @@
             for (let y = 0; y < height; y++) {
                 let line = "";
                 for (let x = 0; x < width; x++) {
-                    if (y === height - 1) {
-                        if (x === spaceshipPos) {
-                            if (spaceshipPos < 0) {
-                                // Display the right part of the spaceship if it's partially offscreen to the left
-                                line += spaceshipString.slice(-spaceshipPos);
-                            } else if (spaceshipPos > width - spaceshipString.length) {
-                                // Display only the portion that fits if spaceship is partially offscreen to the right
-                                line += spaceshipString.slice(0, width - spaceshipPos);
-                            } else {
-                                // Display the entire spaceship normally
-                                line += spaceshipString;
-                            }
-                            x += spaceshipString.length - 1; // Skip the rest of the spaceship width
-                        }
+                    // Render the spaceship on the bottom row at its position
+                    if (y === height - 1 && x >= spaceshipPos && x < spaceshipPos + spaceshipString.length) {
+                        line += spaceshipString[x - spaceshipPos];
                     } else if (bullets.some(b => b.x === x && b.y === y)) {
                         line += "o"; // bullet
                     } else if (enemies.some(e => e.x === x && e.y === y)) {
@@ -98,10 +87,10 @@
         // Move spaceship left and right
         document.addEventListener("keydown", e => {
             console.log("Key pressed:", e.key); // Debugging log to see if keydown is working
-            if (e.key === "ArrowLeft" && spaceshipPos > -spaceshipCenter) {
-                spaceshipPos--; // Move left, allowing it to go slightly out of bounds
-            } else if (e.key === "ArrowRight" && spaceshipPos < width - spaceshipString.length + spaceshipCenter) {
-                spaceshipPos++; // Move right, allowing slight overlap
+            if (e.key === "ArrowLeft" && spaceshipPos > 0) {
+                spaceshipPos--; // Move left, restricting it within bounds
+            } else if (e.key === "ArrowRight" && spaceshipPos < width - spaceshipString.length) {
+                spaceshipPos++; // Move right, restricting it within bounds
             } else if (e.key === " ") {
                 bullets.push({ x: spaceshipPos + spaceshipCenter, y: height - 2 }); // Fire bullet from center `!`
             }
