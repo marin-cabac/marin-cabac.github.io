@@ -44,6 +44,7 @@
         const width = 40; // game area width
         const height = 20; // game area height
 
+        const spaceshipString = "<=!=>";
         let spaceshipPos = Math.floor(width / 2) - 2; // Center the spaceship under bullets
         let bullets = [];
         let enemies = [];
@@ -62,18 +63,19 @@
             for (let y = 0; y < height; y++) {
                 let line = "";
                 for (let x = 0; x < width; x++) {
-                    // Render the spaceship
-                    if (y === height - 1 && x === spaceshipPos) {
+                    if (y === height - 1) {
                         if (spaceshipPos <= 0) {
-                            line += "=!=> "; // Display entire spaceship at the far left
-                            x += 4; // Skip the remaining part of the spaceship width
-                        } else if (spaceshipPos >= width - 4) {
-                            line += " <=!="; // Display entire spaceship at the far right
-                            x += 4; // Skip the remaining part of the spaceship width
+                            // Display entire spaceship at the far left
+                            line += spaceshipString;
+                        } else if (spaceshipPos >= width - spaceshipString.length) {
+                            // Display entire spaceship at the far right
+                            line += spaceshipString;
                         } else {
-                            line += "<=!=>";
-                            x += 4; // Skip the remaining part of the spaceship width
+                            // Display partial spaceship based on remaining space
+                            const remainingSpace = width - spaceshipPos - 1;
+                            line += spaceshipString.slice(0, remainingSpace);
                         }
+                        x += spaceshipString.length - 1; // Skip the remaining part of the spaceship width
                     } else if (bullets.some(b => b.x === x && b.y === y)) {
                         line += "o"; // bullet
                     } else if (enemies.some(e => e.x === x && e.y === y)) {
@@ -87,15 +89,15 @@
             game.textContent = output;
 
             // Update score displays
-            hitsDisplay.textContent = `HITS: ${hits}`;
-            missesDisplay.textContent = `MISSES: ${misses}`;
+            hitsDisplay.textContent = `#HITS: ${hits}`;
+            missesDisplay.textContent = #MISSES: ${misses}`;
         }
 
         // Move spaceship left and right
         document.addEventListener("keydown", e => {
-            if (e.key === "ArrowLeft" && spaceshipPos > 0) { // Updated boundary for left
+            if (e.key === "ArrowLeft" && spaceshipPos > 0) {
                 spaceshipPos--; // Move left
-            } else if (e.key === "ArrowRight" && spaceshipPos < width - 5) { // Updated boundary for right
+            } else if (e.key === "ArrowRight" && spaceshipPos < width - spaceshipString.length) {
                 spaceshipPos++; // Move right
             } else if (e.key === " ") {
                 bullets.push({ x: spaceshipPos + 2, y: height - 2 }); // Fire bullet from center
