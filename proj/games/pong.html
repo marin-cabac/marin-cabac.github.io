@@ -11,11 +11,11 @@
             align-items: center;
             height: 100vh;
             margin: 0;
-            background-color: #333;
+            background-color: black;
         }
         canvas {
             background-color: #000;
-            border: 2px solid #fff;
+            border: 2px solid #3AFF3A;
         }
     </style>
 </head>
@@ -34,7 +34,7 @@
             speed: 5,
             velocityX: 5,
             velocityY: 5,
-            color: "WHITE"
+            color: "#3AFF3A"
         };
 
         // Paddles
@@ -43,7 +43,7 @@
             y: canvas.height / 2 - 50,
             width: 10,
             height: 100,
-            color: "WHITE",
+            color: "#3AFF3A",
             score: 0
         };
 
@@ -52,7 +52,7 @@
             y: canvas.height / 2 - 50,
             width: 10,
             height: 100,
-            color: "WHITE",
+            color: "#3AFF3A",
             score: 0
         };
 
@@ -62,7 +62,7 @@
             y: 0,
             width: 2,
             height: 10,
-            color: "WHITE"
+            color: "#3AFF3A"
         };
 
         // Draw functions
@@ -161,8 +161,8 @@
         // Render the game
         function render() {
             drawRect(0, 0, canvas.width, canvas.height, "#000");
-            drawText(user.score, canvas.width / 4, canvas.height / 5, "WHITE");
-            drawText(computer.score, 3 * canvas.width / 4, canvas.height / 5, "WHITE");
+            drawText(user.score, canvas.width / 4, canvas.height / 5, "#3AFF3A");
+            drawText(computer.score, 3 * canvas.width / 4, canvas.height / 5, "#3AFF3A");
             drawNet();
             drawRect(user.x, user.y, user.width, user.height, user.color);
             drawRect(computer.x, computer.y, computer.width, computer.height, computer.color);
