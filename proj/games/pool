@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Improved Pool Game with Elastic Collision</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0;
+            height: 100vh;
+            background-color: black;
+        }
+        canvas {
+            background-color: black;
+            display: block;
+            border: 5px solid #3AFF3A;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="pool" width="800" height="400"></canvas>
+    <script>
+        const canvas = document.getElementById("pool");
+        const ctx = canvas.getContext("2d");
+
+        const tableBorderColor = "#3AFF3A";
+        const ballColor = "#3AFF3A";
+        const pocketColor = "#3AFF3A";
+        const stickColor = "#3AFF3A";
+        const ballRadius = 10;
+        const pocketRadius = 20;
+
+        const balls = [];
+        const pockets = [
+            { x: 0, y: 0 },
+            { x: canvas.width / 2, y: 0 },
+            { x: canvas.width, y: 0 },
+            { x: 0, y: canvas.height },
+            { x: canvas.width / 2, y: canvas.height },
+            { x: canvas.width, y: canvas.height }
+        ];
+        const stick = { x: 400, y: 200, angle: 0, length: 150, shooting: false };
+
+        let score = 0;
+
+        // Initialize balls
+        for (let i = 0; i < 9; i++) {
+            balls.push({
+                x: Math.random() * (canvas.width - 2 * ballRadius) + ballRadius,
+                y: Math.random() * (canvas.height - 2 * ballRadius) + ballRadius,
+                vx: 0,
+                vy: 0,
+                number: i + 1,
+            });
+        }
+
+        // Draw a single ball
+        function drawBall(ball) {
+            ctx.beginPath();
+            ctx.arc(ball.x, ball.y, ballRadius, 0, Math.PI * 2);
+            ctx.fillStyle = ballColor;
+            ctx.fill();
+            ctx.closePath();
+
+            ctx.fillStyle = "black";
+            ctx.font = "bold 14px Arial";
+            ctx.textAlign = "center";
+            ctx.textBaseline = "middle";
+            ctx.fillText(ball.number, ball.x, ball.y);
+        }
+
+        // Draw a pocket
+        function drawPocket(pocket) {
+            ctx.beginPath();
+            ctx.arc(pocket.x, pocket.y, pocketRadius, 0, Math.PI * 2);
+            ctx.fillStyle = pocketColor;
+            ctx.fill();
+            ctx.closePath();
+        }
+
+        // Draw the stick
+        function drawStick() {
+            ctx.beginPath();
+            ctx.moveTo(stick.x, stick.y);
+            ctx.lineTo(
+                stick.x + Math.cos(stick.angle) * stick.length,
+                stick.y + Math.sin(stick.angle) * stick.length
+            );
+            ctx.strokeStyle = stickColor;
+            ctx.lineWidth = 4;
+            ctx.stroke();
+            ctx.closePath();
+        }
+
+        // Move balls and handle collisions
+        function moveBalls() {
+            for (let i = 0; i < balls.length; i++) {
+                const ball = balls[i];
+                ball.x += ball.vx;
+                ball.y += ball.vy;
+
+                // Friction to slow balls
+                ball.vx *= 0.99;
+                ball.vy *= 0.99;
+
+                // Stop balls if velocity is very low
+                if (Math.abs(ball.vx) < 0.01) ball.vx = 0;
+                if (Math.abs(ball.vy) < 0.01) ball.vy = 0;
+
+                // Bounce off walls
+                if (ball.x - ballRadius < 0 || ball.x + ballRadius > canvas.width) {
+                    ball.vx *= -1;
+                }
+                if (ball.y - ballRadius < 0 || ball.y + ballRadius > canvas.height) {
+                    ball.vy *= -1;
+                }
+
+                // Check if ball falls into a pocket
+                for (let pocket of pockets) {
+                    const dx = ball.x - pocket.x;
+                    const dy = ball.y - pocket.y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+
+                    if (distance < pocketRadius) {
+                        balls.splice(i, 1); // Remove the ball
+                        score++; // Increment score
+                        break;
+                    }
+                }
+
+                // Handle ball collisions
+                for (let j = i + 1; j < balls.length; j++) {
+                    const otherBall = balls[j];
+                    const dx = otherBall.x - ball.x;
+                    const dy = otherBall.y - ball.y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+
+                    if (distance < ballRadius * 2) {
+                        // Resolve overlap
+                        const angle = Math.atan2(dy, dx);
+                        const overlap = ballRadius * 2 - distance;
+
+                        // Separate balls to prevent sticking
+                        const separationX = Math.cos(angle) * overlap / 2;
+                        const separationY = Math.sin(angle) * overlap / 2;
+                        ball.x -= separationX;
+                        ball.y -= separationY;
+                        otherBall.x += separationX;
+                        otherBall.y += separationY;
+
+                        // Calculate collision response (elastic collision)
+                        const totalMass = 2; // Equal mass for all balls
+                        const ballVel = { x: ball.vx, y: ball.vy };
+                        const otherBallVel = { x: otherBall.vx, y: otherBall.vy };
+
+                        // Normal and tangent vectors
+                        const normal = { x: dx / distance, y: dy / distance };
+                        const tangent = { x: -normal.y, y: normal.x };
+
+                        // Project velocities onto the normal and tangent vectors
+                        const ballNormalVel = ballVel.x * normal.x + ballVel.y * normal.y;
+                        const ballTangentVel = ballVel.x * tangent.x + ballVel.y * tangent.y;
+                        const otherBallNormalVel = otherBallVel.x * normal.x + otherBallVel.y * normal.y;
+                        const otherBallTangentVel = otherBallVel.x * tangent.x + otherBallVel.y * tangent.y;
+
+                        // Swap normal velocities for elastic collision
+                        const newBallNormalVel = otherBallNormalVel;
+                        const newOtherBallNormalVel = ballNormalVel;
+
+                        // Recombine velocities
+                        ball.vx = newBallNormalVel * normal.x + ballTangentVel * tangent.x;
+                        ball.vy = newBallNormalVel * normal.y + ballTangentVel * tangent.y;
+                        otherBall.vx = newOtherBallNormalVel * normal.x + otherBallTangentVel * tangent.x;
+                        otherBall.vy = newOtherBallNormalVel * normal.y + otherBallTangentVel * tangent.y;
+                    }
+                }
+            }
+        }
+
+        // Render the game
+        function render() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Draw table border
+            ctx.strokeStyle = tableBorderColor;
+            ctx.lineWidth = 5;
+            ctx.strokeRect(0, 0, canvas.width, canvas.height);
+
+            // Draw pockets
+            for (let pocket of pockets) {
+                drawPocket(pocket);
+            }
+
+            // Draw balls
+            for (let ball of balls) {
+                drawBall(ball);
+            }
+
+            // Draw stick if not shooting
+            if (!stick.shooting) {
+                drawStick();
+            }
+
+            // Draw score
+            ctx.fillStyle = "white";
+            ctx.font = "20px Arial";
+            ctx.textAlign = "left";
+            ctx.fillText(`Score: ${score}`, 10, 25);
+        }
+
+        // Select the ball in the direction of the stick
+        function getTargetBall() {
+            let targetBall = null;
+            let minDistance = Infinity;
+
+            for (let ball of balls) {
+                const dx = ball.x - stick.x;
+                const dy = ball.y - stick.y;
+                const angleToBall = Math.atan2(dy, dx);
+
+                // Check if the ball is within a small angle tolerance of the stick's angle
+                const angleDiff = Math.abs(stick.angle - angleToBall);
+                if (angleDiff < 0.2) {
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+                    if (distance < minDistance) {
+                        minDistance = distance;
+                        targetBall = ball;
+                    }
+                }
+            }
+
+            return targetBall;
+        }
+
+        // Shoot the stick
+        canvas.addEventListener("click", () => {
+            if (stick.shooting) return;
+
+            stick.shooting = true;
+
+            // Find the target ball
+            const targetBall = getTargetBall();
+
+            if (targetBall) {
+                // Apply velocity to the target ball
+                const force = 7;
+                targetBall.vx = Math.cos(stick.angle) * force;
+                targetBall.vy = Math.sin(stick.angle) * force;
+            }
+
+            // Reset the stick after a delay
+            setTimeout(() => {
+                stick.shooting = false;
+            }, 500);
+        });
+
+        // Control the stick angle with the mouse
+        canvas.addEventListener("mousemove", (event) => {
+            const rect = canvas.getBoundingClientRect();
+            const mouseX = event.clientX - rect.left;
+            const mouseY = event.clientY - rect.top;
+
+            stick.angle = Math.atan2(mouseY - stick.y, mouseX - stick.x);
+        });
+
+        // Start game
+        function gameLoop() {
+            moveBalls();
+            render();
+            requestAnimationFrame(gameLoop);
+        }
+
+        gameLoop();
+    </script>
+</body>
+</html>
