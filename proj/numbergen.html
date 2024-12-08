@@ -47,16 +47,23 @@
     </div>
 
     <script>
-        // Function to generate random numbers
-        function generateRandomNumbers(count, min, max) {
-            const numbers = [];
-            while (numbers.length < count) {
-                const num = Math.floor(Math.random() * (max - min + 1)) + min;
-                if (!numbers.includes(num)) {
-                    numbers.push(num);
+        // Function to generate unique numbers across multiple lists
+        function generateUniqueNumbersAcrossLists(totalLists, count, min, max) {
+            const usedNumbers = new Set();
+            const allLists = [];
+
+            for (let i = 0; i < totalLists; i++) {
+                const currentList = [];
+                while (currentList.length < count) {
+                    const num = Math.floor(Math.random() * (max - min + 1)) + min;
+                    if (!usedNumbers.has(num)) {
+                        usedNumbers.add(num);
+                        currentList.push(num);
+                    }
                 }
+                allLists.push(currentList);
             }
-            return numbers;
+            return allLists;
         }
 
         // Generate EUROMILLIONS numbers
@@ -64,17 +71,19 @@
             const mainContainer = document.getElementById('euro-main');
             const luckyContainer = document.getElementById('euro-lucky');
 
-            for (let i = 0; i < 5; i++) {
-                const mainNumbers = generateRandomNumbers(5, 1, 50);
-                const luckyNumbers = generateRandomNumbers(5, 1, 12);
+            // Main Numbers: Unique across all lists
+            const mainNumbersLists = generateUniqueNumbersAcrossLists(5, 5, 1, 50);
+            // Lucky Numbers: Unique across all lists
+            const luckyNumbersLists = generateUniqueNumbersAcrossLists(5, 5, 1, 12);
 
+            for (let i = 0; i < 5; i++) {
                 const mainList = document.createElement('div');
                 mainList.className = 'list';
-                mainList.textContent = `Main Numbers: ${mainNumbers.join(', ')}`;
+                mainList.textContent = `Main Numbers: ${mainNumbersLists[i].join(', ')}`;
 
                 const luckyList = document.createElement('div');
                 luckyList.className = 'list';
-                luckyList.textContent = `Lucky Numbers: ${luckyNumbers.join(', ')}`;
+                luckyList.textContent = `Lucky Numbers: ${luckyNumbersLists[i].join(', ')}`;
 
                 mainContainer.appendChild(mainList);
                 luckyContainer.appendChild(luckyList);
@@ -86,17 +95,19 @@
             const mainContainer = document.getElementById('loto-main');
             const specialContainer = document.getElementById('loto-special');
 
-            for (let i = 0; i < 5; i++) {
-                const mainNumbers = generateRandomNumbers(5, 1, 49);
-                const specialNumbers = generateRandomNumbers(5, 1, 10);
+            // Main Numbers: Unique across all lists
+            const mainNumbersLists = generateUniqueNumbersAcrossLists(5, 5, 1, 49);
+            // Special Numbers: Unique across all lists
+            const specialNumbersLists = generateUniqueNumbersAcrossLists(5, 5, 1, 10);
 
+            for (let i = 0; i < 5; i++) {
                 const mainList = document.createElement('div');
                 mainList.className = 'list';
-                mainList.textContent = `Main Numbers: ${mainNumbers.join(', ')}`;
+                mainList.textContent = `Main Numbers: ${mainNumbersLists[i].join(', ')}`;
 
                 const specialList = document.createElement('div');
                 specialList.className = 'list';
-                specialList.textContent = `Special Numbers: ${specialNumbers.join(', ')}`;
+                specialList.textContent = `Special Numbers: ${specialNumbersLists[i].join(', ')}`;
 
                 mainContainer.appendChild(mainList);
                 specialContainer.appendChild(specialList);
@@ -109,4 +120,3 @@
     </script>
 </body>
 </html>
-
