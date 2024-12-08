@@ -47,17 +47,11 @@
     </div>
 
     <script>
-        // Function to generate unique numbers across multiple lists
-        function generateUniqueNumbersAcrossLists(totalLists, count, min, max) {
-            const rangeSize = max - min + 1;
-            if (totalLists * count > rangeSize) {
-                console.error(`Cannot generate ${totalLists * count} unique numbers in range ${min}-${max}.`);
-                return [];
-            }
-            const usedNumbers = new Set();
+        function generateNumbersPerList(totalLists, count, min, max) {
             const allLists = [];
             for (let i = 0; i < totalLists; i++) {
                 const currentList = [];
+                const usedNumbers = new Set(); // Reset for each list
                 while (currentList.length < count) {
                     const num = Math.floor(Math.random() * (max - min + 1)) + min;
                     if (!usedNumbers.has(num)) {
@@ -83,10 +77,8 @@
             clearContainer(mainContainer);
             clearContainer(luckyContainer);
 
-            const mainNumbersLists = generateUniqueNumbersAcrossLists(5, 5, 1, 50);
-            if (!mainNumbersLists.length) return;
-            const luckyNumbersLists = generateUniqueNumbersAcrossLists(5, 5, 1, 12);
-            if (!luckyNumbersLists.length) return;
+            const mainNumbersLists = generateNumbersPerList(5, 5, 1, 50); // Main Numbers
+            const luckyNumbersLists = generateNumbersPerList(5, 2, 1, 12); // Adjusted Lucky Numbers
 
             mainNumbersLists.forEach((list, index) => {
                 const div = document.createElement('div');
@@ -109,10 +101,8 @@
             clearContainer(mainContainer);
             clearContainer(specialContainer);
 
-            const mainNumbersLists = generateUniqueNumbersAcrossLists(5, 5, 1, 49);
-            if (!mainNumbersLists.length) return;
-            const specialNumbersLists = generateUniqueNumbersAcrossLists(5, 5, 1, 10);
-            if (!specialNumbersLists.length) return;
+            const mainNumbersLists = generateNumbersPerList(5, 5, 1, 49); // Main Numbers
+            const specialNumbersLists = generateNumbersPerList(5, 2, 1, 10); // Adjusted Special Numbers
 
             mainNumbersLists.forEach((list, index) => {
                 const div = document.createElement('div');
