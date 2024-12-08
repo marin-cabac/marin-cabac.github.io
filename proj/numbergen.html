@@ -1,1 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Random Number Generator</title>
+    <style>
+        body {
+            background-color: black;
+            color: lime;
+            font-family: monospace;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 0;
+            padding: 20px;
+        }
+        h1, h2 {
+            margin: 10px 0;
+        }
+        .category {
+            margin: 20px 0;
+            width: 80%;
+            max-width: 500px;
+        }
+        .list {
+            margin: 10px 0;
+            padding: 10px;
+            border: 1px solid lime;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Random Number Generator</h1>
+
+    <div class="category" id="euromillions">
+        <h2>EUROMILLIONS</h2>
+        <div id="euro-main"></div>
+        <div id="euro-lucky"></div>
+    </div>
+
+    <div class="category" id="loto">
+        <h2>LOTO</h2>
+        <div id="loto-main"></div>
+        <div id="loto-special"></div>
+    </div>
+
+    <script>
+        // Function to generate random numbers
+        function generateRandomNumbers(count, min, max) {
+            const numbers = [];
+            while (numbers.length < count) {
+                const num = Math.floor(Math.random() * (max - min + 1)) + min;
+                if (!numbers.includes(num)) {
+                    numbers.push(num);
+                }
+            }
+            return numbers;
+        }
+
+        // Generate EUROMILLIONS numbers
+        function generateEuroMillions() {
+            const mainContainer = document.getElementById('euro-main');
+            const luckyContainer = document.getElementById('euro-lucky');
+
+            for (let i = 0; i < 5; i++) {
+                const mainNumbers = generateRandomNumbers(5, 1, 50);
+                const luckyNumbers = generateRandomNumbers(5, 1, 12);
+
+                const mainList = document.createElement('div');
+                mainList.className = 'list';
+                mainList.textContent = `Main Numbers: ${mainNumbers.join(', ')}`;
+
+                const luckyList = document.createElement('div');
+                luckyList.className = 'list';
+                luckyList.textContent = `Lucky Numbers: ${luckyNumbers.join(', ')}`;
+
+                mainContainer.appendChild(mainList);
+                luckyContainer.appendChild(luckyList);
+            }
+        }
+
+        // Generate LOTO numbers
+        function generateLoto() {
+            const mainContainer = document.getElementById('loto-main');
+            const specialContainer = document.getElementById('loto-special');
+
+            for (let i = 0; i < 5; i++) {
+                const mainNumbers = generateRandomNumbers(5, 1, 49);
+                const specialNumbers = generateRandomNumbers(5, 1, 10);
+
+                const mainList = document.createElement('div');
+                mainList.className = 'list';
+                mainList.textContent = `Main Numbers: ${mainNumbers.join(', ')}`;
+
+                const specialList = document.createElement('div');
+                specialList.className = 'list';
+                specialList.textContent = `Special Numbers: ${specialNumbers.join(', ')}`;
+
+                mainContainer.appendChild(mainList);
+                specialContainer.appendChild(specialList);
+            }
+        }
+
+        // Generate all numbers on page load
+        generateEuroMillions();
+        generateLoto();
+    </script>
+</body>
+</html>
 
