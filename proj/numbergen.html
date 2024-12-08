@@ -1,85 +1,125 @@
-// Function to generate unique numbers across multiple lists
-function generateUniqueNumbersAcrossLists(totalLists, count, min, max) {
-    const rangeSize = max - min + 1;
-    if (totalLists * count > rangeSize) {
-        // Throw an error if the range is too small for the request
-        console.error(
-            `Cannot generate ${totalLists * count} unique numbers in range ${min}-${max}.`
-        );
-        return []; // Return an empty array to prevent issues
-    }
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Random Number Generator</title>
+    <style>
+        body {
+            background-color: black;
+            color: lime;
+            font-family: monospace;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 0;
+            padding: 20px;
+        }
+        h1, h2 {
+            margin: 10px 0;
+        }
+        .category {
+            margin: 20px 0;
+            width: 80%;
+            max-width: 500px;
+        }
+        .list {
+            margin: 10px 0;
+            padding: 10px;
+            border: 1px solid lime;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Random Number Generator</h1>
 
-    const usedNumbers = new Set();
-    const allLists = [];
+    <div class="category" id="euromillions">
+        <h2>EUROMILLIONS</h2>
+        <div id="euro-main"></div>
+        <div id="euro-lucky"></div>
+    </div>
 
-    for (let i = 0; i < totalLists; i++) {
-        const currentList = [];
-        while (currentList.length < count) {
-            const num = Math.floor(Math.random() * (max - min + 1)) + min;
-            if (!usedNumbers.has(num)) {
-                usedNumbers.add(num);
-                currentList.push(num);
+    <div class="category" id="loto">
+        <h2>LOTO</h2>
+        <div id="loto-main"></div>
+        <div id="loto-special"></div>
+    </div>
+
+    <script>
+        // Function to generate unique numbers across multiple lists
+        function generateUniqueNumbersAcrossLists(totalLists, count, min, max) {
+            const rangeSize = max - min + 1;
+            if (totalLists * count > rangeSize) {
+                console.error(`Cannot generate ${totalLists * count} unique numbers in range ${min}-${max}.`);
+                return [];
+            }
+            const usedNumbers = new Set();
+            const allLists = [];
+            for (let i = 0; i < totalLists; i++) {
+                const currentList = [];
+                while (currentList.length < count) {
+                    const num = Math.floor(Math.random() * (max - min + 1)) + min;
+                    if (!usedNumbers.has(num)) {
+                        usedNumbers.add(num);
+                        currentList.push(num);
+                    }
+                }
+                allLists.push(currentList);
+            }
+            return allLists;
+        }
+
+        function generateEuroMillions() {
+            const mainContainer = document.getElementById('euro-main');
+            const luckyContainer = document.getElementById('euro-lucky');
+            clearContainer(mainContainer);
+            clearContainer(luckyContainer);
+            const mainNumbersLists = generateUniqueNumbersAcrossLists(5, 5, 1, 50);
+            if (!mainNumbersLists.length) return;
+            const luckyNumbersLists = generateUniqueNumbersAcrossLists(5, 5, 1, 12);
+            if (!luckyNumbersLists.length) return;
+            for (let i = 0; i < 5; i++) {
+                const mainList = document.createElement('div');
+                mainList.className = 'list';
+                mainList.textContent = `Main Numbers: ${mainNumbersLists[i].join(', ')}`;
+                const luckyList = document.createElement('div');
+                luckyList.className = 'list';
+                luckyList.textContent = `Lucky Numbers: ${luckyNumbersLists[i].join(', ')}`;
+                mainContainer.appendChild(mainList);
+                luckyContainer.appendChild(luckyList);
             }
         }
-        allLists.push(currentList);
-    }
-    return allLists;
-}
 
-// Generate EUROMILLIONS numbers
-function generateEuroMillions() {
-    const mainContainer = document.getElementById('euro-main');
-    const luckyContainer = document.getElementById('euro-lucky');
+        function generateLoto() {
+            const mainContainer = document.getElementById('loto-main');
+            const specialContainer = document.getElementById('loto-special');
+            clearContainer(mainContainer);
+            clearContainer(specialContainer);
+            const mainNumbersLists = generateUniqueNumbersAcrossLists(5, 5, 1, 49);
+            if (!mainNumbersLists.length) return;
+            const specialNumbersLists = generateUniqueNumbersAcrossLists(5, 5, 1, 10);
+            if (!specialNumbersLists.length) return;
+            for (let i = 0; i < 5; i++) {
+                const mainList = document.createElement('div');
+                mainList.className = 'list';
+                mainList.textContent = `Main Numbers: ${mainNumbersLists[i].join(', ')}`;
+                const specialList = document.createElement('div');
+                specialList.className = 'list';
+                specialList.textContent = `Special Numbers: ${specialNumbersLists[i].join(', ')}`;
+                mainContainer.appendChild(mainList);
+                specialContainer.appendChild(specialList);
+            }
+        }
 
-    // Main Numbers: Unique across all lists
-    const mainNumbersLists = generateUniqueNumbersAcrossLists(5, 5, 1, 50);
-    if (!mainNumbersLists.length) return; // Stop if generation failed
+        function clearContainer(container) {
+            while (container.firstChild) {
+                container.removeChild(container.firstChild);
+            }
+        }
 
-    // Lucky Numbers: Unique across all lists
-    const luckyNumbersLists = generateUniqueNumbersAcrossLists(5, 5, 1, 12);
-    if (!luckyNumbersLists.length) return; // Stop if generation failed
-
-    for (let i = 0; i < 5; i++) {
-        const mainList = document.createElement('div');
-        mainList.className = 'list';
-        mainList.textContent = `Main Numbers: ${mainNumbersLists[i].join(', ')}`;
-
-        const luckyList = document.createElement('div');
-        luckyList.className = 'list';
-        luckyList.textContent = `Lucky Numbers: ${luckyNumbersLists[i].join(', ')}`;
-
-        mainContainer.appendChild(mainList);
-        luckyContainer.appendChild(luckyList);
-    }
-}
-
-// Generate LOTO numbers
-function generateLoto() {
-    const mainContainer = document.getElementById('loto-main');
-    const specialContainer = document.getElementById('loto-special');
-
-    // Main Numbers: Unique across all lists
-    const mainNumbersLists = generateUniqueNumbersAcrossLists(5, 5, 1, 49);
-    if (!mainNumbersLists.length) return; // Stop if generation failed
-
-    // Special Numbers: Unique across all lists
-    const specialNumbersLists = generateUniqueNumbersAcrossLists(5, 5, 1, 10);
-    if (!specialNumbersLists.length) return; // Stop if generation failed
-
-    for (let i = 0; i < 5; i++) {
-        const mainList = document.createElement('div');
-        mainList.className = 'list';
-        mainList.textContent = `Main Numbers: ${mainNumbersLists[i].join(', ')}`;
-
-        const specialList = document.createElement('div');
-        specialList.className = 'list';
-        specialList.textContent = `Special Numbers: ${specialNumbersLists[i].join(', ')}`;
-
-        mainContainer.appendChild(mainList);
-        specialContainer.appendChild(specialList);
-    }
-}
-
-// Generate all numbers on page load
-generateEuroMillions();
-generateLoto();
+        generateEuroMillions();
+        generateLoto();
+    </script>
+</body>
+</html>
