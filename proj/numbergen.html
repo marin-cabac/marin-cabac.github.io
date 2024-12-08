@@ -47,7 +47,7 @@
     </div>
 
     <script>
-        // Function 777 to generate unique numbers across multiple lists
+        // Function to generate unique numbers across multiple lists
         function generateUniqueNumbersAcrossLists(totalLists, count, min, max) {
             const rangeSize = max - min + 1;
             if (totalLists * count > rangeSize) {
@@ -67,7 +67,14 @@
                 }
                 allLists.push(currentList);
             }
+            console.log(`Generated Lists:`, allLists);
             return allLists;
+        }
+
+        function clearContainer(container) {
+            while (container.firstChild) {
+                container.removeChild(container.firstChild);
+            }
         }
 
         function generateEuroMillions() {
@@ -75,20 +82,25 @@
             const luckyContainer = document.getElementById('euro-lucky');
             clearContainer(mainContainer);
             clearContainer(luckyContainer);
+
             const mainNumbersLists = generateUniqueNumbersAcrossLists(5, 5, 1, 50);
             if (!mainNumbersLists.length) return;
             const luckyNumbersLists = generateUniqueNumbersAcrossLists(5, 5, 1, 12);
             if (!luckyNumbersLists.length) return;
-            for (let i = 0; i < 5; i++) {
-                const mainList = document.createElement('div');
-                mainList.className = 'list';
-                mainList.textContent = `Main Numbers: ${mainNumbersLists[i].join(', ')}`;
-                const luckyList = document.createElement('div');
-                luckyList.className = 'list';
-                luckyList.textContent = `Lucky Numbers: ${luckyNumbersLists[i].join(', ')}`;
-                mainContainer.appendChild(mainList);
-                luckyContainer.appendChild(luckyList);
-            }
+
+            mainNumbersLists.forEach((list, index) => {
+                const div = document.createElement('div');
+                div.className = 'list';
+                div.textContent = `Set ${index + 1} Main Numbers: ${list.join(', ')}`;
+                mainContainer.appendChild(div);
+            });
+
+            luckyNumbersLists.forEach((list, index) => {
+                const div = document.createElement('div');
+                div.className = 'list';
+                div.textContent = `Set ${index + 1} Lucky Numbers: ${list.join(', ')}`;
+                luckyContainer.appendChild(div);
+            });
         }
 
         function generateLoto() {
@@ -96,26 +108,25 @@
             const specialContainer = document.getElementById('loto-special');
             clearContainer(mainContainer);
             clearContainer(specialContainer);
+
             const mainNumbersLists = generateUniqueNumbersAcrossLists(5, 5, 1, 49);
             if (!mainNumbersLists.length) return;
             const specialNumbersLists = generateUniqueNumbersAcrossLists(5, 5, 1, 10);
             if (!specialNumbersLists.length) return;
-            for (let i = 0; i < 5; i++) {
-                const mainList = document.createElement('div');
-                mainList.className = 'list';
-                mainList.textContent = `Main Numbers: ${mainNumbersLists[i].join(', ')}`;
-                const specialList = document.createElement('div');
-                specialList.className = 'list';
-                specialList.textContent = `Special Numbers: ${specialNumbersLists[i].join(', ')}`;
-                mainContainer.appendChild(mainList);
-                specialContainer.appendChild(specialList);
-            }
-        }
 
-        function clearContainer(container) {
-            while (container.firstChild) {
-                container.removeChild(container.firstChild);
-            }
+            mainNumbersLists.forEach((list, index) => {
+                const div = document.createElement('div');
+                div.className = 'list';
+                div.textContent = `Set ${index + 1} Main Numbers: ${list.join(', ')}`;
+                mainContainer.appendChild(div);
+            });
+
+            specialNumbersLists.forEach((list, index) => {
+                const div = document.createElement('div');
+                div.className = 'list';
+                div.textContent = `Set ${index + 1} Special Numbers: ${list.join(', ')}`;
+                specialContainer.appendChild(div);
+            });
         }
 
         generateEuroMillions();
