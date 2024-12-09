@@ -32,7 +32,7 @@
     </style>
 </head>
 <body>
-    <h1>Random Number Generator</h1>
+    <h1>Random Number GEN</h1>
 
     <div class="category" id="euromillions">
         <h2>EUROMILLIONS (1->50)</h2>
@@ -49,21 +49,21 @@
     </div>
 
     <script>
-        function generateNumbersPerList(totalLists, count, min, max) {
+        function generateUniqueNumbersAcrossLists(totalLists, count, min, max) {
+            const usedNumbers = new Set(); // Track all used numbers for the entire group
             const allLists = [];
+
             for (let i = 0; i < totalLists; i++) {
                 const currentList = [];
-                const usedNumbers = new Set(); // Reset for each list
                 while (currentList.length < count) {
                     const num = Math.floor(Math.random() * (max - min + 1)) + min;
                     if (!usedNumbers.has(num)) {
-                        usedNumbers.add(num);
+                        usedNumbers.add(num); // Mark number as used globally
                         currentList.push(num);
                     }
                 }
                 allLists.push(currentList);
             }
-            console.log(`Generated Lists:`, allLists);
             return allLists;
         }
 
@@ -79,8 +79,11 @@
             clearContainer(mainContainer);
             clearContainer(luckyContainer);
 
-            const mainNumbersLists = generateNumbersPerList(5, 5, 1, 50); // Main Numbers
-            const luckyNumbersLists = generateNumbersPerList(5, 2, 1, 12); // Adjusted Lucky Numbers
+            // Generate numbers for "EUROMILLIONS (1->50)"
+            const mainNumbersLists = generateUniqueNumbersAcrossLists(5, 5, 1, 50);
+
+            // Generate numbers for "EUROMILLIONS (1->12)"
+            const luckyNumbersLists = generateUniqueNumbersAcrossLists(5, 2, 1, 12);
 
             mainNumbersLists.forEach((list, index) => {
                 const div = document.createElement('div');
@@ -103,8 +106,11 @@
             clearContainer(mainContainer);
             clearContainer(specialContainer);
 
-            const mainNumbersLists = generateNumbersPerList(5, 5, 1, 49); // Main Numbers
-            const specialNumbersLists = generateNumbersPerList(5, 2, 1, 10); // Adjusted Special Numbers
+            // Generate numbers for "LOTO (1->49)"
+            const mainNumbersLists = generateUniqueNumbersAcrossLists(5, 5, 1, 49);
+
+            // Generate numbers for "LOTO (1->10)"
+            const specialNumbersLists = generateUniqueNumbersAcrossLists(5, 2, 1, 10);
 
             mainNumbersLists.forEach((list, index) => {
                 const div = document.createElement('div');
