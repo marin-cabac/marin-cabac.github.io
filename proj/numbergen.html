@@ -68,27 +68,36 @@
             }
         }
 
+        function generateNumbersWithGlobalExclusion(totalLists, count, min, max, globalExclude) {
+            const allLists = [];
+            for (let i = 0; i < totalLists; i++) {
+                const list = generateUniqueNumbers(count, min, max, globalExclude);
+                globalExclude.push(...list);
+                allLists.push(list);
+            }
+            return allLists;
+        }
+
         function generateEuroMillions() {
             const mainContainer = document.getElementById('euro-main');
             const luckyContainer = document.getElementById('euro-lucky');
             clearContainer(mainContainer);
             clearContainer(luckyContainer);
 
-            // Static numbers
-            const staticMain = [2, 3, 5, 28, 29];
-            const staticLucky = [5, 11];
+            const globalExcludeMain = [2, 3, 5, 28, 29];
+            const globalExcludeLucky = [5, 11];
 
             // Generate "EUROMILLIONS (1->50)" lists
-            const mainNumbersLists = [staticMain];
-            for (let i = 1; i < 5; i++) {
-                mainNumbersLists.push(generateUniqueNumbers(5, 1, 50, staticMain.flat()));
-            }
+            const mainNumbersLists = [[...globalExcludeMain]];
+            mainNumbersLists.push(
+                ...generateNumbersWithGlobalExclusion(4, 5, 1, 50, globalExcludeMain)
+            );
 
             // Generate "EUROMILLIONS (1->12)" lists
-            const luckyNumbersLists = [staticLucky];
-            for (let i = 1; i < 5; i++) {
-                luckyNumbersLists.push(generateUniqueNumbers(2, 1, 12, staticLucky.flat()));
-            }
+            const luckyNumbersLists = [[...globalExcludeLucky]];
+            luckyNumbersLists.push(
+                ...generateNumbersWithGlobalExclusion(4, 2, 1, 12, globalExcludeLucky)
+            );
 
             // Display main numbers
             mainNumbersLists.forEach((list, index) => {
@@ -113,21 +122,20 @@
             clearContainer(mainContainer);
             clearContainer(specialContainer);
 
-            // Static numbers
-            const staticMain = [5, 6, 9, 38, 27];
-            const staticSpecial = [3, 4];
+            const globalExcludeMain = [5, 6, 9, 38, 27];
+            const globalExcludeSpecial = [3, 4];
 
             // Generate "LOTO (1->49)" lists
-            const mainNumbersLists = [staticMain];
-            for (let i = 1; i < 5; i++) {
-                mainNumbersLists.push(generateUniqueNumbers(5, 1, 49, staticMain.flat()));
-            }
+            const mainNumbersLists = [[...globalExcludeMain]];
+            mainNumbersLists.push(
+                ...generateNumbersWithGlobalExclusion(4, 5, 1, 49, globalExcludeMain)
+            );
 
             // Generate "LOTO (1->10)" lists
-            const specialNumbersLists = [staticSpecial];
-            for (let i = 1; i < 5; i++) {
-                specialNumbersLists.push(generateUniqueNumbers(2, 1, 10, staticSpecial.flat()));
-            }
+            const specialNumbersLists = [[...globalExcludeSpecial]];
+            specialNumbersLists.push(
+                ...generateNumbersWithGlobalExclusion(4, 2, 1, 10, globalExcludeSpecial)
+            );
 
             // Display main numbers
             mainNumbersLists.forEach((list, index) => {
