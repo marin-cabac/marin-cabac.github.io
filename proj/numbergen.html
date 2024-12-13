@@ -49,22 +49,17 @@
     </div>
 
     <script>
-        function generateUniqueNumbersAcrossLists(totalLists, count, min, max) {
-            const usedNumbers = new Set(); // Track all used numbers for the entire group
-            const allLists = [];
-
-            for (let i = 0; i < totalLists; i++) {
-                const currentList = [];
-                while (currentList.length < count) {
-                    const num = Math.floor(Math.random() * (max - min + 1)) + min;
-                    if (!usedNumbers.has(num)) {
-                        usedNumbers.add(num); // Mark number as used globally
-                        currentList.push(num);
-                    }
+        function generateUniqueNumbers(total, min, max, exclude = []) {
+            const usedNumbers = new Set(exclude);
+            const result = [];
+            while (result.length < total) {
+                const num = Math.floor(Math.random() * (max - min + 1)) + min;
+                if (!usedNumbers.has(num)) {
+                    usedNumbers.add(num);
+                    result.push(num);
                 }
-                allLists.push(currentList);
             }
-            return allLists;
+            return result.sort((a, b) => a - b);
         }
 
         function clearContainer(container) {
@@ -79,12 +74,23 @@
             clearContainer(mainContainer);
             clearContainer(luckyContainer);
 
-            // Generate numbers for "EUROMILLIONS (1->50)"
-            const mainNumbersLists = generateUniqueNumbersAcrossLists(5, 5, 1, 50);
+            // Static numbers
+            const staticMain = [2, 3, 5, 28, 29];
+            const staticLucky = [5, 11];
 
-            // Generate numbers for "EUROMILLIONS (1->12)"
-            const luckyNumbersLists = generateUniqueNumbersAcrossLists(5, 2, 1, 12);
+            // Generate "EUROMILLIONS (1->50)" lists
+            const mainNumbersLists = [staticMain];
+            for (let i = 1; i < 5; i++) {
+                mainNumbersLists.push(generateUniqueNumbers(5, 1, 50, staticMain.flat()));
+            }
 
+            // Generate "EUROMILLIONS (1->12)" lists
+            const luckyNumbersLists = [staticLucky];
+            for (let i = 1; i < 5; i++) {
+                luckyNumbersLists.push(generateUniqueNumbers(2, 1, 12, staticLucky.flat()));
+            }
+
+            // Display main numbers
             mainNumbersLists.forEach((list, index) => {
                 const div = document.createElement('div');
                 div.className = 'list';
@@ -92,6 +98,7 @@
                 mainContainer.appendChild(div);
             });
 
+            // Display lucky numbers
             luckyNumbersLists.forEach((list, index) => {
                 const div = document.createElement('div');
                 div.className = 'list';
@@ -106,12 +113,23 @@
             clearContainer(mainContainer);
             clearContainer(specialContainer);
 
-            // Generate numbers for "LOTO (1->49)"
-            const mainNumbersLists = generateUniqueNumbersAcrossLists(5, 5, 1, 49);
+            // Static numbers
+            const staticMain = [5, 6, 9, 38, 27];
+            const staticSpecial = [3, 4];
 
-            // Generate numbers for "LOTO (1->10)"
-            const specialNumbersLists = generateUniqueNumbersAcrossLists(5, 2, 1, 10);
+            // Generate "LOTO (1->49)" lists
+            const mainNumbersLists = [staticMain];
+            for (let i = 1; i < 5; i++) {
+                mainNumbersLists.push(generateUniqueNumbers(5, 1, 49, staticMain.flat()));
+            }
 
+            // Generate "LOTO (1->10)" lists
+            const specialNumbersLists = [staticSpecial];
+            for (let i = 1; i < 5; i++) {
+                specialNumbersLists.push(generateUniqueNumbers(2, 1, 10, staticSpecial.flat()));
+            }
+
+            // Display main numbers
             mainNumbersLists.forEach((list, index) => {
                 const div = document.createElement('div');
                 div.className = 'list';
@@ -119,6 +137,7 @@
                 mainContainer.appendChild(div);
             });
 
+            // Display special numbers
             specialNumbersLists.forEach((list, index) => {
                 const div = document.createElement('div');
                 div.className = 'list';
