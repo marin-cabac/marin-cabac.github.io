@@ -12,7 +12,7 @@ body {
 .flashcard-container {
   perspective: 1000px;
   margin-bottom: 20px;
-  background-image: url('bckgrnd.png');
+  background-image: url('img/bckgrnd.png');
   background-size: cover; /* Ensures the image covers the entire container */
   background-position: center; /* Centers the image within the container */
   background-repeat: no-repeat; /* Prevents the image from repeating */
