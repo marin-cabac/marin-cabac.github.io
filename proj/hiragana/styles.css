@@ -7,20 +7,20 @@ body {
   margin: 0;
   font-family: Arial, sans-serif;
   background-color: #f0f0f0;
+  background-image: url('img/bckgrnd.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 .flashcard-container {
   perspective: 1000px;
   margin-bottom: 20px;
-  background-image: url('img/bckgrnd.png');
-  background-size: cover; /* Ensures the image covers the entire container */
-  background-position: center; /* Centers the image within the container */
-  background-repeat: no-repeat; /* Prevents the image from repeating */
-  width: 100%; /* Adjust as needed */
-  height: 100vh; /* Adjust as needed */
-  /* Additional styling */
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
-
 
 .flashcard {
   width: 300px;
@@ -93,4 +93,3 @@ button:disabled {
   background-color: #cccccc;
   cursor: not-allowed;
 }
-
