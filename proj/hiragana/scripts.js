@@ -1,7 +1,7 @@
 const flashcards = [
-  { front: 'card1.png', back: 'card1a.png' },
-  { front: 'card2.png', back: 'card2a.png' },
-  { front: 'card3.png', back: 'card3a.png' },
+  { front: 'img/card1.png', back: 'img/card1a.png' },
+  { front: 'img/card2.png', back: 'img/card2a.png' },
+  { front: 'img/card3.png', back: 'img/card3a.png' },
   // Add more card pairs as needed
 ];
 
